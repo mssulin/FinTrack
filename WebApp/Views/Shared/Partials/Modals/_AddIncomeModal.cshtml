@@ -1,0 +1,21 @@
+@model WebApp.ViewModels.DashboardViewModel
+
+<div id="add-income-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Lägg till inkomst</h3>
+            <span class="close"></span>
+        </div>
+        <form asp-controller="Income" asp-action="Add" method="post">
+            <div class="form">
+                <label for="source">Inkomstkälla</label>
+                <select asp-for="NewIncome.Source" asp-items="@(new SelectList(Model.IncomeSources))"></select>
+            </div>
+            <div class="form">
+                <label for="amount">Summa</label>
+                <input asp-for="NewIncome.Amount" type="number" required />
+            </div>
+            <button type="submit" class="btn modal-button">Lägg till</button>
+        </form>
+    </div>
+</div>

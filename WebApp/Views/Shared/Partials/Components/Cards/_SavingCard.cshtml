@@ -1,0 +1,54 @@
+@using WebApp.Helpers
+@model IEnumerable<WebApp.ViewModels.SavingViewModel>
+
+<div class="py-10">
+    @if (!Model.Any())
+    {
+        <p>Du har inga sparanden ännu</p>
+    }
+    else
+    {
+        <div class="grid gap-4
+                    grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-3
+                    justify-items-center">
+
+            @foreach (var saving in Model)
+            {
+                <div class="list-card w-full h-full max-w-[350px] md:max-w-[500px] flex flex-col gap-4 items-center">
+                    <div class="flex items-center gap-2">
+                        @EmojiHelper.GetEmoji(saving.Title)
+                        <p class="font-bold text-lg">@saving.Title</p>
+                    </div>
+
+                    <span class="text-md">Sparat hittills:</span>
+                    <span class="font-bold">@($"{saving.CurrentAmount:N0}") kr</span>
+                    <span class="text-md">Mål:</span>
+                    <span class="font-bold">@($"{saving.TargetAmount:N0}") kr</span>
+
+                    <div class="h-4 w-[300px] rounded-full bg-white/10 border border-white/10 overflow-hidden">
+                        <div class="h-full rounded-full
+                                    bg-gradient-to-r from-emerald-400 via-sky-400 to-purple-400
+                                    shadow-[0_0_10px_rgba(56,189,248,0.25)]
+                                    transition-[width] duration-500 ease-out"
+                             style="width:@saving.ProgressPercent%"></div>
+                    </div>
+                    
+                    <div>
+                        <p>Du har sparat
+                            <span class="font-bold">
+                                @saving.ProgressPercent
+                            </span>
+                            % av ditt sparmål
+                            </p>
+                    </div>
+                    
+                    @await Html.PartialAsync("Partials/Modals/_AddSavingDepositModal",
+                        new WebApp.ViewModels.AddDepositViewModel { SavingId = saving.Id })
+                    @await Html.PartialAsync("Partials/Modals/_SavingHistoryModal", saving.Id)
+                </div>
+            }
+        </div>
+    }
+</div>

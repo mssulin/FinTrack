@@ -1,0 +1,17 @@
+@using Data.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<UserEntity> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<div class="w-full hidden md:block lg:flex-none">
+    <h1 class="text-xl text-white font-bold pb-2">FinTrack</h1>
+    <div class="h-[2px] w-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
+
+    <div class="flex gap-3 px-2 py-4 items-center align-middle">
+        <div class="w-10 h-10 bg-blue-500 rounded-full"></div>
+        <p class="text-center text-sm font-light">@user?.FirstName @user?.LastName</p>
+    </div>
+</div>
+

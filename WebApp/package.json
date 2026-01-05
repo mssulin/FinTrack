@@ -1,0 +1,14 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently -k \"dotnet watch run\" \"npm:tw:dev\"",
+    "build": "npm run tw:build && npm run && dotnet build",
+    "tw:dev": "tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css --watch",
+    "tw:build": "tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css --minify"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "tailwindcss": "^4.1.16"
+  }
+}

@@ -1,0 +1,27 @@
+@layer components {
+    .navlink {
+        @apply no-underline flex flex-col items-center justify-center text-xs font-semibold
+        transition text-white/80 hover:text-white
+        px-2 py-2
+        md:w-full md:p-2
+        lg:flex-row lg:justify-start lg:items-center lg:gap-3 lg:px-4 lg:py-3 lg:text-sm lg:text-left
+    }
+
+    .navlink-md-inactive {
+        @apply md:border-1 md:border-transparent;
+    }
+
+    .navlink-active-sm {
+        @apply bg-[#31344a] text-white rounded-full w-10 h-10;
+    }
+
+    .navlink-active-md {
+        @apply md:bg-white/5 md:rounded-md md:w-full md:h-auto md:border-1 md:border-sky-400 md:pl-3;
+
+    }
+
+    a:hover span:first-child {
+        transform: scale(1.1);
+        transition: transform 0.2s ease;
+    }
+}

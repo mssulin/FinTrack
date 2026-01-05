@@ -1,0 +1,12 @@
+@layer components {
+    .card {
+        @apply bg-[#1B1E2B] border border-white/10 text-[16px] text-gray-200
+        shadow-[0_2px_8px_rgba(0,0,0,0.4)] rounded-xl p-4;
+    }
+    .card:hover { @apply border-white/20 transition; }
+    
+    .list-card {
+        @apply bg-[#1B1E2B] border border-white/10 text-[16px] text-gray-200
+        shadow-[0_2px_8px_rgba(0,0,0,0.4)] rounded-xl py-4;
+    }
+}

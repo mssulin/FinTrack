@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@import "./cards.css";
+@import "./buttons.css";
+@import "./links.css";
+
+@source "../Views/**/*.cshtml";
+@source "../js/**/*.js";
+
+
+@theme {
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    --color-text: #595959;
+    --color-navbar-text: #676767;
+    --color-navbar-active-bg: #dadada;
+    --color-navbar-active-text: #595959;
+
+    --color-main-border: rgb(195 195 195);
+    --color-btn-border:  rgb(193 193 193);
+
+    --color-page-bg: #0F111A;   
+    --color-card-bg:  #1B1E2B;  
+}
+
+/* Base */
+@layer base {
+    *, ::before, ::after { box-sizing: border-box; }
+
+    html, body {
+        @apply m-0 text-[16px] text-gray-200 bg-[var(--color-page-bg)]
+        font-sans not-italic font-medium
+        pb-[calc(76px+env(safe-area-inset-bottom))];
+        color: #E5E7EB;
+        font-family: var(--font-sans);
+        background-color: #0F111A !important;
+    }
+}
+
+/* Components */
+@layer components {
+    
+        .donut {
+            width: 100%;
+            height: 100%;
+            display: block;
+            
+            --thickness: 8px;  
+            --track: #25283A;  
+            --p: 0;             
+            --start: #86EFAC;   
+            --end:   #60A5FA;   
+
+            background: conic-gradient(
+                    var(--start) 0%,
+                    var(--end) calc(var(--p) * 1%),
+                    var(--track) 0
+            );
+            
+            border-radius: 50%;
+            mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 0);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--thickness)), #000 0);
+
+            transition: background .35s ease, filter .35s ease;
+        }
+        
+        .donut[data-progress="low"] {
+            --start: #FCA5A5; /* rosa */
+            --end:   #FB7185; /* korall */
+        }
+        .donut[data-progress="medium"] {
+            --start: #FDE68A; /* ljus gul */
+            --end:   #FBBF24; /* amber */
+        }
+        .donut[data-progress="high"] {
+            --start: #86EFAC; /* grön */
+            --end:   #60A5FA; /* blå */
+        }
+
+    .donut:hover { filter: drop-shadow(0 0 8px rgba(255,255,255,.12)); }
+    
+    .t-bold { @apply font-bold; }
+    
+}

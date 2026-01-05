@@ -1,0 +1,22 @@
+@model List<WebApp.ViewModels.ExpenseViewModel>
+
+<div class="card w-full p-4 sm:p-5 lg:p-6">
+
+    <!-- Header -->
+    <div class="mb-4 sm:mb-5">
+        <h3 class="text-white/95 font-semibold flex items-center gap-2 text-base sm:text-lg">
+            <span class="text-[18px] sm:text-[20px] select-none">📉</span>
+            Totala utgifter
+        </h3>
+        <div class="h-[2px] w-20 sm:w-28 mt-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+    </div>
+
+    <!-- Chart -->
+    <div class="relative w-full h-[220px] sm:h-[260px] lg:-[320px]">
+        <canvas id="expenseChart"
+                class="absolute inset-0"
+                data-categories='@System.Text.Json.JsonSerializer.Serialize(Model.Select(e => e.Category).Distinct())'
+                data-amounts='@System.Text.Json.JsonSerializer.Serialize(Model.GroupBy(e => e.Category).Select(g => g.Sum(x => x.Amount)))'>
+        </canvas>
+    </div>
+</div>

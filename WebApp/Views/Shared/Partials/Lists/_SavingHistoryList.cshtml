@@ -1,0 +1,19 @@
+@model IEnumerable<WebApp.ViewModels.SavingHistoryViewModel>
+
+<div class="history-list">
+    @if (!Model.Any())
+    {
+        <p>Ingen historik än</p>
+    }
+    else
+    {
+        @foreach (var history in Model)
+        {
+            <div class="history-item">
+                <span>@history.Date.ToString("yyyy-MM-dd")</span>
+                <span>@history.Type</span>
+                <span>@($"{history.Amount:N0}") kr</span>
+            </div>
+        }
+    }
+</div>

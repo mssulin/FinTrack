@@ -1,0 +1,47 @@
+@using Data.Entities
+@using Microsoft.AspNetCore.Identity
+@model WebApp.ViewModels.DashboardViewModel
+@inject UserManager<UserEntity> UserManager
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_Layout";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@section Modals {
+    @await Html.PartialAsync("Partials/Modals/_AddIncomeModal", Model)
+    @await Html.PartialAsync("Partials/Modals/_AddExpenseModal", Model)
+    @await Html.PartialAsync("Partials/Modals/_AddSavingModal", Model.Savings)
+}
+
+<div class="flex flex-col gap-6 pt-8 px-4 md:px-6 lg:pt-1 lg:px-2">
+    <header class="flex flex-col gap-2 text-center md:text-left">
+        <p class="text-sm uppercase tracking-wide text-white/50">
+            Välkommen tillbaka
+        </p>
+
+        <h1 class="text-2xl font-bold text-white">
+            Hej, <span class="">
+        @user?.FirstName
+      </span> 👋
+        </h1>
+
+        <p class="text-sm text-gray-400">
+            Din ekonomiska översikt för
+            <span class="font-semibold text-white/90">@Model.CurrentMonth</span>
+        </p>
+    </header>
+
+    <section class="flex flex-col gap-4 px-4 md:flex-row md:gap-5 h-full w-full">
+        @await Html.PartialAsync("Partials/Components/_DashboardOverviewPartial", Model)
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full h-full">
+      @await Html.PartialAsync("Partials/Components/_MonthlyOverviewPartial", Model)
+  </section>
+
+<section class="">
+    @await Html.PartialAsync("Partials/Components/_SavingsOverviewPartial", Model.Savings)
+</section>
+</div>

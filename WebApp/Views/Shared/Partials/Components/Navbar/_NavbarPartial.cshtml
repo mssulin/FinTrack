@@ -1,0 +1,11 @@
+
+<nav class="fixed left-0 right-0 bottom-0 z-[999] bg-[#1B1E2B] border-t border-white/10
+  h-[70px] px-3
+  md:fixed md:inset-y-0 md:left-0 md:w-[80px] md:h-auto md:border-t-0 md:border-r md:border-white/10
+  lg:static lg:h-[98dvh] lg:w-[250px] lg:rounded-xl lg:border lg:border-white/10 lg:px-3 lg:py-4
+  lg:flex lg:flex-col lg:gap-3 lg:justify-start lg:items-stretch">
+    @await Html.PartialAsync("Partials/Components/Navbar/_NavbarHeader")
+
+    @await Html.PartialAsync("Partials/Components/Navbar/_NavbarLinks")
+    
+</nav>

@@ -1,0 +1,47 @@
+@using WebApp.Helpers
+@model List<WebApp.ViewModels.SavingViewModel>
+
+<div class="card w-full p-4 sm:p-5 lg:p-6">
+    <div class="card-body">
+        <header class="flex flex-col mb-4 sm:mb-5">
+            <h3 class="text-white font-semibold text-lg flex items-center gap-2">
+                Sparmål
+            </h3>
+            <div class="h-[2px] w-20 sm:w-28 mt-2 bg-gradient-to-r from-emerald-400 to-amber-300 rounded-full"></div>
+        </header>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var saving in Model)
+            {
+                var p = saving.ProgressPercent;
+                var progressClass = p < 30 ? "low"
+                    : p < 70 ? "medium"
+                    : "high";
+
+                <div class="flex flex-col items-center gap-3 card">
+                    <!-- Donut -->
+                    <div class="relative w-20 h-20 sm:w-24 sm:h-24">
+                        <div class="donut absolute inset-0 rounded-full"
+                             data-progress="@progressClass"
+                             style="--p:@p;">
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+                            @p%
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex flex-col gap-2">
+                        <p class="text-sm font-semibold text-white flex items-center justify-center gap-1 lg:text-md">
+                            <span>@EmojiHelper.GetEmoji(saving.Title)</span> @saving.Title
+                        </p>
+                        <p class="text-xs text-gray-400">
+                            <span class="text-white font-semibold">@($"{saving.CurrentAmount:N0}")</span>
+                            av @($"{saving.TargetAmount:N0}") kr
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

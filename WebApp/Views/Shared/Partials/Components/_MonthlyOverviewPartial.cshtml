@@ -1,0 +1,10 @@
+@model WebApp.ViewModels.DashboardViewModel
+
+    <div class="flex flex-col gap-2">
+        @await Html.PartialAsync("Partials/Components/_TotalExpensesPartial", Model.Expenses)
+    </div>
+    
+    <div class="flex flex-col gap-2">
+        @await Html.PartialAsync("Partials/Components/_UpcomingTransactionsPartial", Model.Subscriptions)
+        @await Html.PartialAsync("Partials/Components/_MonthlySavingPartial", Model)
+    </div>

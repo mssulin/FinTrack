@@ -1,0 +1,30 @@
+
+<div id="create-saving-modal" class="hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Skapa sparmål</h3>
+            <span class="close"></span>
+        </div>
+
+        <form asp-controller="Savings" asp-action="AddSaving" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form">
+                <label for="title">Titel</label>
+                <input id="title" name="Title" required />
+            </div>
+
+            <div class="form">
+                <label for="target">Målbelopp</label>
+                <input id="target" name="TargetAmount" type="number" step="0.01" required />
+            </div>
+
+            <div class="form">
+                <label for="current">Startbelopp</label>
+                <input id="current" name="CurrentAmount" type="number" step="0.01" value="0" />
+            </div>
+
+            <button type="submit" class="btn modal-button">Skapa</button>
+        </form>
+    </div>
+</div>

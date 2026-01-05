@@ -1,0 +1,29 @@
+# Build outputs 
+**/bin/
+**/obj/
+.vs/
+
+# IDE
+.idea/
+
+# Uploads / user content
+WebApp/wwwroot/uploads/
+**/wwwroot/uploads/
+
+# SQLite
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# Local settings / secrets
+appsettings.Private.json
+appsettings.Exam.json
+appsettings.*.local.json
+
+# Node
+node_modules/
+**/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

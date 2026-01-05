@@ -1,0 +1,39 @@
+@{
+    var c = ViewContext.RouteData.Values["controller"]?.ToString();
+    var a = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<div class="w-full grid grid-cols-3 items-center justify-items-center gap-1 py-2
+            md:flex md:flex-col md:items-center md:gap-2 md:py-4
+            lg:items-start lg:gap-2 lg:justify-start lg:self-stretch lg:flex-none">
+
+    <a asp-controller="Dashboard" asp-action="Index"
+       class="navlink @(c=="Dashboard" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
+        <span class="text-[22px] lg:text-[18px] leading-none select-none">🏠</span>
+        <span class="hidden lg:inline lg:text-[14px]">Dashboard</span>
+    </a>
+
+    <a asp-controller="Subscription" asp-action="Index"
+       class="navlink @(c=="Subscription" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
+        <span class="text-[22px] lg:text-[18px] leading-none select-none">💳</span>
+        <span class="hidden lg:inline lg:text-[14px]">Prenumerationer</span>
+    </a>
+
+    <a asp-controller="Savings" asp-action="Index"
+       class="navlink @(c=="Savings" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
+        <span class="text-[22px] lg:text-[18px] leading-none select-none">💰</span>
+        <span class="hidden lg:inline lg:text-[14px]">Sparande</span>
+    </a>
+
+    <!-- Logout -->
+    <form asp-controller="Auth" asp-action="Logout" method="post"
+          class="hidden lg:block lg:mt-auto lg:px-1 w-full">
+        <button type="submit"
+                class="w-[130px] h-[40px] rounded-[10px] border text-[var(--navbar-text-color)]
+                   border-[color:var(--color-btn-border)] inline-flex items-center justify-center gap-2
+                   hover:opacity-90 transition no-underline">
+            <span class="text-[18px] leading-none select-none">🚪</span>
+            <span class="text-sm">Logga ut</span>
+        </button>
+    </form>
+</div>

@@ -1,0 +1,21 @@
+@model IEnumerable<WebApp.ViewModels.SubscriptionViewModel>
+
+<div class="py-10">
+    <div class="grid grid-cols-1 md:[grid-template-columns:repeat(3,250px)] lg:[grid-template-columns:repeat(5,250px)] gap-4 justify-center md:justify-start">
+        @foreach (var sub in Model)
+        {
+            <div class="list-card w-full h-full max-w-[350px] md:h-[350px] flex flex-col gap-4 items-center">
+                    <img src="@sub.ImageUrl" class="w-[100px] h-[100px] object-contain" alt="@sub.Name" />
+                    <h3 class="text-lg font-bold">@sub.Name</h3>
+                    <p class="italic">@sub.Category</p>
+                    <p class="font-semibold">@sub.Amount kr / @sub.Frequency</p>
+                    <p>Nästa betalning: @sub.NextPaymentDate.ToString("yyyy-MM-dd")</p>
+                    
+                <form asp-controller="Subscription" asp-action="Delete" method="post">
+                    <input type="hidden" name="id" value="@sub.Id" />
+                    <button type="submit" class="btn mt-2">Radera</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>
