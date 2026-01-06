@@ -13,7 +13,7 @@ public class ExpenseController(IExpenseService expenseService, UserManager<UserE
     : Controller
 {
     [HttpPost]
-    public async Task<IActionResult> Add(ExpenseViewModel model)
+    public async Task<IActionResult> AddExpense(ExpenseViewModel model)
     {
         
         if (!ModelState.IsValid)

@@ -1,66 +1,70 @@
-<div id="sub-modal" class="hidden">
-    <div class="modal-content">
+<div id="sub-modal" class="modal">
+    <div class="modal-card relative">
         <div class="modal-header">
             <h3 class="modal-title">Lägg till prenumeration</h3>
+            <button type="button" class="modal-close">x</button>
         </div>
 
-        <form asp-controller="Subscription" asp-action="Add" method="post" enctype="multipart/form-data">
+        <form asp-controller="Subscription" asp-action="AddSub" method="post" enctype="multipart/form-data" class="modal-form">
 
-            <div class="subscription-image">
-                <div class="image-preview-container">
-                    <img id="subImagePreview" class="image-preview hide" alt="Preview" />
-                    <div class="image-preview-icon-container">
-                        <i class="fa-duotone fa-solid fa-camera"></i>
+            <div class="image-upload">
+
+                <div id="imageBox"
+                     class="relative flex items-center justify-center
+                 w-28 h-28 md:w-32 md:h-32 mx-auto rounded-md
+                border border-dashed border-slate-600
+                bg-slate-800/50
+                cursor-pointer
+                hover:border-slate-400
+                transition">
+
+                    <!-- Placeholder -->
+                    <div id="imagePlaceholder"
+                         class="flex flex-col items-center gap-1 text-gray-400 text-sm">
+                        <span>Välj bild</span>
                     </div>
+
+                    <!-- Preview -->
+                    <img id="subImagePreview"
+                         class="hidden absolute inset-0 w-full h-full object-cover rounded-lg"
+                         alt="Preview" />
                 </div>
-                <input type="file" id="image" name="Image" accept="image/*" />
+
+                <input type="file"
+                       id="image"
+                       name="Image"
+                       accept="image/*"
+                       class="hidden" />
             </div>
 
             <div>
-                <label for="name">Namn</label>
-                <input type="text" id="name" name="Name" required />
+                <label class="modal-label">Namn</label>
+                <input type="text" id="name" name="Name" required class="modal-input"/>
             </div>
 
             <div>
-                <label for="amount">Summa</label>
-                <input type="number" id="amount" name="Amount" required />
+                <label class="modal-label">Summa</label>
+                <input type="number" id="amount" name="Amount" required class="modal-input" />
             </div>
             <div>
-                <label for="category">Kategori</label>
-                <input type="text" id="category" name="Category" required />
+                <label class="modal-label">Kategori</label>
+                <input type="text" id="category" name="Category" required class="modal-input"/>
             </div>
             <div>
-                <label for="lastPayment">Senaste betalning</label>
-                <input type="date" id="lastPayment" name="LastPaymentDate" class="form-control" required />
+                <label class="modal-label">Senaste betalning</label>
+                <input type="date" id="lastPayment" name="LastPaymentDate" required class="modal-input" />
             </div>
 
             <div>
-                <label for="frequency">Hur ofta ska det betalas?</label>
-                <select id="frequency" name="Frequency">
+                <label class="modal-label">Hur ofta ska det betalas?</label>
+                <select id="frequency" name="Frequency" class="modal-input">
                     <option value="Månad">1 gång / månad</option>
                     <option value="Kvartal">1 gång / kvartal</option>
                     <option value="År">1 gång / år</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn modal-button">Lägg till</button>
+            <button type="submit" class="modal-submit">Lägg till</button>
         </form>
     </div>
 </div>
-
-<script>
-    const imageInput = document.getElementById("image");
-    const preview = document.getElementById("subImagePreview");
-
-    imageInput.addEventListener("change", function () {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.classList.remove("hide");
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>

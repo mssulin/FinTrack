@@ -15,7 +15,7 @@ public class IncomeController(IIncomeService incomeService, UserManager<UserEnti
 
 
     [HttpPost]
-    public async Task<IActionResult> Add(DashboardViewModel model)
+    public async Task<IActionResult> AddIncome(DashboardViewModel model)
     {
         if (!ModelState.IsValid)
             return RedirectToAction("Index", "Dashboard");

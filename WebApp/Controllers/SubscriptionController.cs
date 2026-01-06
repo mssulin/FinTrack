@@ -61,7 +61,7 @@ public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISub
    }
    
    [HttpPost]
-   public async Task<IActionResult> Add(SubscriptionViewModel model)
+   public async Task<IActionResult> AddSub(SubscriptionViewModel model)
    {
       if (!ModelState.IsValid)
          return RedirectToAction("Index", "Dashboard");

@@ -10,6 +10,4 @@ public class SavingViewModel
     public int ProgressPercent => TargetAmount > 0
         ? (int)Math.Round((CurrentAmount / TargetAmount) * 100)
         : 0;
-    
-    public List<SavingViewModel> Savings { get; set; } = null!;
 }

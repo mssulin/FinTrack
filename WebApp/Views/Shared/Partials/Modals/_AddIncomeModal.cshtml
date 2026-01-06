@@ -1,22 +1,35 @@
 @model WebApp.ViewModels.DashboardViewModel
 
-<div id="add-income-modal"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
-    <div class="modal-content">
+<div id="add-income-modal" class="modal">
+
+    <div class="modal-card relative">
         <div class="modal-header">
             <h3 class="modal-title">Lägg till inkomst</h3>
-            <span class="close"></span>
+            <button type="button" class="modal-close">x</button>
         </div>
-        <form asp-controller="Income" asp-action="Add" method="post">
-            <div class="form">
-                <label for="source">Inkomstkälla</label>
-                <select asp-for="NewIncome.Source" asp-items="@(new SelectList(Model.IncomeSources))"></select>
+
+        <form asp-controller="Income" asp-action="AddIncome" method="post" class="modal-form">
+            
+            @await Html.PartialAsync("Partials/Components/_ModalDropdown", new WebApp.ViewModels.ModalDropdownViewModel
+            {
+                Label = "Inkomstkälla",
+                Name = "NewIncome.Source",
+                Placeholder = "Välj inkomstkälla",
+                Value = Model.NewIncome?.Source,
+                Items = Model.IncomeSources
+            })
+
+            <div>
+                <label class="modal-label">Summa</label>
+                <input asp-for="NewIncome.Amount"
+                       type="number"
+                       required
+                       class="modal-input"/>
             </div>
-            <div class="form">
-                <label for="amount">Summa</label>
-                <input asp-for="NewIncome.Amount" type="number" required />
-            </div>
-            <button type="submit" class="btn modal-button">Lägg till</button>
+            <button type="submit"
+                    class="modal-submit">
+                Lägg till
+            </button>
         </form>
     </div>
 </div>

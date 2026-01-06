@@ -36,9 +36,9 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
 
         return View(model);
     }
-
+    
     [HttpPost]
-    public async Task<IActionResult> AddSaving(SavingViewModel model)
+    public async Task<IActionResult> CreateSavingGoal(SavingViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
@@ -52,44 +52,17 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
             TargetAmount = model.TargetAmount,
         };
 
-        await _savingService.AddSavingAsync(saving);
+        await _savingService.CreateSavingGoalAsync(saving);
 
         return RedirectToAction("Index", "Dashboard");
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddDeposit(AddDepositViewModel model)
+    public async Task<IActionResult> AddToSaving(AddToSavingViewModel model)
     {
-        var saving = await _savingService.GetSavingByIdAsync(model.SavingId);
-        if (saving == null)
-            return NotFound();
-        
-        saving.CurrentAmount += model.Amount;
-        await _savingService.UpdateSavingAsync(saving);
-        
-        await _savingService.AddSavingHistoryAsync(new SavingHistoryEntity
-        {
-            SavingId = saving.Id,
-            Amount = model.Amount, 
-            Date = DateTime.Now,
-            Type = "Deposit"
-        });
-
+        await _savingService.AddToSavingAsync(model.SavingId, model.Amount);
         return RedirectToAction("Index", "Dashboard");
     }
-
-    [HttpPost]
-    public async Task<IActionResult> AddInterest(AddDepositViewModel model)
-    {
-        var saving = await _savingService.GetSavingByIdAsync(model.SavingId);
-        if (saving == null) return NotFound();
-        
-        saving.CurrentAmount += model.Amount;
-        await _savingService.UpdateSavingAsync(saving);
-        
-        return RedirectToAction("Index", "Dashboard");
-    }
-    
     
 
     [HttpPost]

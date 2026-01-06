@@ -1,0 +1,31 @@
+
+<div id="saving-goal-modal" class="modal">
+    
+    <div class="modal-card relative">
+        <div class="modal-header">
+            <h3 class="modal-title">Nytt sparmål</h3>
+            <button type="button" class="modal-close">x</button>
+        </div>
+
+        <form asp-controller="Savings" asp-action="CreateSavingGoal" method="post" class="modal-form">
+            @Html.AntiForgeryToken()
+
+            <div>
+                <label class="modal-label">Titel</label>
+                <input name="Title" required class="modal-input"/>
+            </div>
+
+            <div>
+                <label class="modal-label">Startbelopp</label>
+                <input name="CurrentAmount" type="number" step="0.01" value="0" class="modal-input"/>
+            </div>
+            
+            <div>
+                <label class="modal-label">Målbelopp</label>
+                <input name="TargetAmount" type="number" step="0.01" required class="modal-input"/>
+            </div>
+
+            <button type="submit" class="modal-submit">Spara sparmål</button>
+        </form>
+    </div>
+</div>

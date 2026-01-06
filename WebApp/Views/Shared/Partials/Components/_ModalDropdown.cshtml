@@ -1,0 +1,38 @@
+@model WebApp.ViewModels.ModalDropdownViewModel
+
+<div class="relative" data-dd-root>
+    @if (!string.IsNullOrWhiteSpace(Model.Label))
+    {
+        <label class="modal-label">@Model.Label</label>
+    }
+    
+    <input type="hidden" name="@Model.Name" value="@Model.Value" data-dd-hidden/>
+    
+    <button type="button"
+            class="modal-input flex items-center justify-between"
+            data-dd-button
+            aria-expanded="false">
+        <span data-dd-label>
+            @(string.IsNullOrWhiteSpace(Model.Value) ? Model.Placeholder : Model.Value)
+        </span>
+        <span class="text-gray-400">▾</span>
+    </button>
+    
+    <div class="absolute left-0 right-0 mt-2 hidden rounded-md border border-slate-700
+                bg-slate-900 shadow-xl z-50 max-h-56 overflow-auto"
+         data-dd-menu>
+        @foreach (var raw in Model.Items ?? [])
+        {
+            var parts = raw.Split('|', 2);
+            var value = parts.Length == 2 ? parts[0] : raw;
+            var text  = parts.Length == 2 ? parts[1] : raw;
+
+            <button type="button"
+                    class="w-full text-left px-3 py-2 hover:bg-white/10"
+                    data-dd-item="@value"
+                    data-dd-text="@text">
+                @text
+            </button>
+        }
+    </div>
+</div>
