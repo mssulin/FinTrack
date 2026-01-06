@@ -10,9 +10,29 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
     private readonly ISavingRepository _savingRepository = savingRepository;
     private readonly ISavingHistoryRepository _savingHistoryRepository = savingHistoryRepository;
 
-    public async Task<SavingEntity> AddSavingAsync(SavingEntity saving)
+    public async Task<SavingEntity> CreateSavingGoalAsync(SavingEntity saving)
     {
         return await _savingRepository.AddAsync(saving);
+    }
+    
+    // Insättning i sparmål
+    public async Task AddToSavingAsync(int savingId, decimal amount)
+    {
+        var saving = await _savingRepository.GetByIdAsync(savingId);
+        if (saving is null) return;
+
+        // Öka nuvarande belopp
+        saving.CurrentAmount += amount;
+        await _savingRepository.UpdateAsync(saving);
+
+        // Sparar i historiken
+        await _savingHistoryRepository.AddAsync(new SavingHistoryEntity
+        {
+            SavingId = saving.Id,
+            Amount = amount,
+            Date = DateTime.Now,
+            Type = "AddToSaving"
+        });
     }
 
     public async Task<IEnumerable<SavingEntity>> GetAllSavingsAsync(string userId)
@@ -37,27 +57,6 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
     public async Task UpdateSavingAsync(SavingEntity saving)
     {
         await _savingRepository.UpdateAsync(saving);
-    }
-    
-    // Insättning av spar
-
-    public async Task AddDepositAsync(int savingId, decimal amount)
-    {
-        var saving = await _savingRepository.GetByIdAsync(savingId);
-        if (saving is null) return;
-
-        // Öka nuvarande belopp
-        saving.CurrentAmount += amount;
-        await _savingRepository.UpdateAsync(saving);
-
-        // Sparar i historiken
-        await _savingHistoryRepository.AddAsync(new SavingHistoryEntity
-        {
-            SavingId = saving.Id,
-            Amount = amount,
-            Date = DateTime.Now,
-            Type = "Deposit"
-        });
     }
 
     public async Task AddSavingHistoryAsync(SavingHistoryEntity history)

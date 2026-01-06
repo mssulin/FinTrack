@@ -4,7 +4,9 @@ namespace Business.Interfaces;
 
 public interface ISavingService
 {
-    Task<SavingEntity> AddSavingAsync(SavingEntity saving);
+    Task<SavingEntity> CreateSavingGoalAsync(SavingEntity saving);
+    
+    Task AddToSavingAsync(int savingId, decimal amount);
     
     Task<IEnumerable<SavingEntity>> GetAllSavingsAsync(string userId);
 
@@ -15,8 +17,6 @@ public interface ISavingService
     Task UpdateSavingAsync(SavingEntity saving);
     
     Task DeleteSavingAsync(SavingEntity saving);
-    
-    Task AddDepositAsync(int savingId, decimal amount);
     
     Task AddSavingHistoryAsync(SavingHistoryEntity history);
     Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryAsync(string userId);
