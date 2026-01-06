@@ -8,7 +8,7 @@
     <div class="main-content">
         <div class="header">
             <div class="button-group">
-                <button id="add-save" class="btn header-button" data-modal-target="create-saving-modal">
+                <button id="add-save" class="btn header-button" data-modal-target="saving-goal-modal">
                     <span>Nytt sparmål</span>
                 </button>
             </div>
@@ -20,5 +20,4 @@
     </div>
 </div>
 
-@await Html.PartialAsync("Partials/Modals/_AddSavingModal", Model)
-@await Html.PartialAsync("Partials/Modals/_CreateSavingModal")   
+@await Html.PartialAsync("Partials/Modals/_CreateSavingGoalModal")   

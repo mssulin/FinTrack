@@ -1,0 +1,46 @@
+@model WebApp.ViewModels.DashboardViewModel
+
+<div id="add-saving-modal" class="modal">
+    
+    <div class="modal-card relative">
+        <div class="modal-header">
+            <h3 class="modal-title">Lägg till sparande</h3>
+            <button type="button" class="modal-close">x</button>
+        </div>
+
+        <form asp-controller="Savings" asp-action="AddToSaving" method="post" class="modal-form">
+            
+            @using System.Globalization
+            @{
+                var sv = CultureInfo.GetCultureInfo("sv-SE");
+                var savingItems = new List<string>();
+
+                foreach (var s in Model.Savings)
+                {
+                    savingItems.Add(string.Format(
+                        sv,
+                        "{0}|{1} (Nuvarande: {2:N0} kr)",
+                        s.Id,
+                        s.Title,
+                        s.CurrentAmount
+                    ));
+                }
+            }
+
+            @await Html.PartialAsync("Partials/Components/_ModalDropdown",
+                new WebApp.ViewModels.ModalDropdownViewModel
+                {
+                    Label = "Välj sparmål",
+                    Name = "SavingId",
+                    Items = savingItems
+                })
+
+            <div>
+                <label class="modal-label">Belopp att spara</label>
+                <input type="number" step="0.01" id="amount" name="Amount" required class="modal-input"/>
+            </div>
+
+            <button type="submit" class="modal-submit">Spara</button>
+        </form>
+    </div>
+</div>

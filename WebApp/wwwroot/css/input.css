@@ -3,8 +3,9 @@
 @import "./cards.css";
 @import "./buttons.css";
 @import "./links.css";
+@import "./modals.css";
 
-@source "../Views/**/*.cshtml";
+@source "../../Views/**/*.cshtml";
 @source "../js/**/*.js";
 
 
@@ -83,4 +84,14 @@
     
     .t-bold { @apply font-bold; }
     
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; 
 }

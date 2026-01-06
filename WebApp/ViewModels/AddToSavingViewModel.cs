@@ -1,6 +1,6 @@
 namespace WebApp.ViewModels;
 
-public class AddDepositViewModel
+public class AddToSavingViewModel
 {
     public int SavingId { get; set; }
     
