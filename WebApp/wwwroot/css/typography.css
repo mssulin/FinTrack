@@ -1,0 +1,9 @@
+@layer components {
+    .xs-bold {
+        @apply text-xs font-semibold;
+    }
+    
+    .text-muted {
+        @apply mt-1 text-sm text-gray-300;
+    }
+}

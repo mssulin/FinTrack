@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - FinTrack</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+</head>
+
+<body class="min-h-dvh bg-[var(--color-page-bg)] text-gray-200">
+<main class="min-h-dvh">
+    @RenderBody()
+</main>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

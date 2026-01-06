@@ -1,0 +1,55 @@
+@using Microsoft.AspNetCore.Identity
+@using Data.Entities
+@inject SignInManager<UserEntity> SignInManager
+
+@{
+    ViewData["Title"] = "Start";
+    Layout = "_CleanLayout";
+    var isSignedIn = SignInManager.IsSignedIn(User);
+}
+
+<div class="relative flex min-h-dvh items-center justify-center px-4 md:px-0">
+    <div class="w-full max-w-xl">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-white">FinTrack</h1>
+            <p class="mt-2 text-base text-gray-400">
+                En enkel översikt av din ekonomi.
+            </p>
+            <p class="mt-2 md:mt-0 text-sm text-gray-400">
+                Inkomst, utgifter, återkommande prenumerationer och sparande på ett ställe.
+            </p>
+        </div>
+
+        <div class="mt-10 md:mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+            @if (isSignedIn)
+            {
+                <a asp-controller="Dashboard" asp-action="Index" class="btn-secondary bg-emerald-600 hover:bg-emerald-500 text-sm">Gå till Dashboard</a>
+            }
+            else
+            {
+                <div class="flex flex-col gap-10">
+                    <a asp-controller="Auth" asp-action="SignIn" class="btn-secondary bg-white/10 hover:bg-white/15 text-sm">Logga in</a>
+                </div>
+            }
+        </div>
+
+
+        <div class="text-center md:text-left mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div class="home-card">
+                <p class="xs-bold text-emerald-300">Inkomst</p>
+                <p class="text-muted">Samla lön och andra intäkter.</p>
+            </div>
+
+            <div class="home-card">
+                <p class="xs-bold text-rose-300">Utgifter</p>
+                <p class="text-muted">Få kontroll på kostnaderna.</p>
+            </div>
+
+            <div class="home-card">
+                <p class="xs-bold text-sky-300">Sparande</p>
+                <p class="text-muted">Sätt mål och följ framsteg.</p>
+            </div>
+        </div>
+    </div>
+</div>
+

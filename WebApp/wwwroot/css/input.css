@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@import "./typography.css";
 @import "./cards.css";
 @import "./buttons.css";
 @import "./links.css";
