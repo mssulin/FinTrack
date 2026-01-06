@@ -103,34 +103,10 @@ app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthentication();
 
-// Dev-only
-if (app.Environment.IsDevelopment())
-{
-    app.Use(async (context, next) =>
-    {
-        if (!(context.User?.Identity?.IsAuthenticated ?? false))
-        {
-            using var scope = context.RequestServices.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
-            var signInManager = scope.ServiceProvider.GetRequiredService<SignInManager<UserEntity>>();
-
-            var email = "demo@fintrack.se";
-            var user = await userManager.FindByEmailAsync(email);
-
-            if (user != null)
-            {
-                await signInManager.SignInAsync(user, isPersistent: true);
-            }
-        }
-
-        await next();
-    });
-}
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
