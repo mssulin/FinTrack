@@ -6,4 +6,8 @@
     .text-muted {
         @apply mt-1 text-sm text-gray-300;
     }
+    
+    .field-error {
+        @apply text-xs text-rose-300;
+    }
 }

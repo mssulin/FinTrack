@@ -2,43 +2,43 @@
 
 <div class="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-6">
     <div class="text-center mb-6">
-        <h3 class="text-xl font-semibold text-white">Skapa ett konto</h3>
+        <h3 class="text-xl font-semibold text-white">Skapa konto</h3>
     </div>
     
     <form asp-controller="Auth" asp-action="SignUp" method="post" novalidate class="flex flex-col gap-4">
         @Html.AntiForgeryToken()
         
-        <div class="flex flex-col gap-1">
+        <div class="form-field">
             <label asp-for="FirstName" class="text-sm text-gray-300"></label>
             <input asp-for="FirstName" class="modal-input" />
-            <span asp-validation-for="FirstName" class="text-xs text-rose-300"></span>
+            <span asp-validation-for="FirstName" class="field-error"></span>
         </div>
         
-        <div class="flex flex-col gap-1">
+        <div class="form-field">
             <label asp-for="LastName" class="text-sm text-gray-300"></label>
             <input asp-for="LastName" class="modal-input" />
-            <span asp-validation-for="LastName" class="text-xs text-rose-300"></span>
+            <span asp-validation-for="LastName" class="field-error"></span>
         </div>
         
-        <div class="flex flex-col gap-1">
+        <div class="form-field">
             <label asp-for="Email" class="text-sm text-gray-300"></label>
             <input asp-for="Email" class="modal-input" />
-            <span asp-validation-for="Email" class="text-xs text-rose-300"></span>
+            <span asp-validation-for="Email" class="field-error"></span>
         </div>
 
-        <div class="flex flex-col gap-1">
+        <div class="form-field">
             <label asp-for="Password" class="text-sm text-gray-300"></label>
             <input asp-for="Password" type="password" class="modal-input" />
-            <span asp-validation-for="Password" class="text-xs text-rose-300"></span>
+            <span asp-validation-for="Password" class="field-error"></span>
         </div>
         
-        <div class="flex flex-col gap-1">
+        <div class="form-field">
             <label asp-for="ConfirmPassword" class="text-sm text-gray-300"></label>
             <input asp-for="ConfirmPassword" class="modal-input" type="password" />
-            <span asp-validation-for="ConfirmPassword" class="text-xs text-rose-300"></span>
+            <span asp-validation-for="ConfirmPassword" class="field-error"></span>
         </div>
         
-        <div asp-validation-summary="ModelOnly" class="text-sm text-rose-300"></div>
+        <div asp-validation-summary="ModelOnly" class="field-error"></div>
 
         <button type="submit" class="modal-submit">Skapa ett konto</button>
     </form>

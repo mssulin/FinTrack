@@ -17,14 +17,20 @@
 
 <div class="flex flex-col gap-6 pt-8 px-4 md:px-6 lg:pt-1 lg:px-2">
     <header class="flex flex-col gap-2 text-center md:text-left">
-        <p class="text-sm uppercase tracking-wide text-white/50">
-            Välkommen tillbaka
-        </p>
+        
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 
+                px-4 py-3 text-sm text-emerald-400">
+                @TempData["SuccessMessage"]
+            </div>
+        }
 
         <h1 class="text-2xl font-bold text-white">
-            Hej, <span class="">
-        @user?.FirstName
-      </span> 👋
+            Hej,
+            <span class="">
+                @user?.FirstName
+            </span> 👋
         </h1>
 
         <p class="text-sm text-gray-400">

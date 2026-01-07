@@ -8,11 +8,13 @@ using WebApp.ViewModels;
 namespace WebApp.Controllers;
 
 [Authorize]
+[Route("fintrack")]
 public class DashboardController(IDashboardService dashboardService, UserManager<UserEntity> _userManager)
     : Controller
 {
     private readonly IDashboardService _dashboardService = dashboardService;
 
+    [HttpGet("dashboard")]
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetUserAsync(User);
