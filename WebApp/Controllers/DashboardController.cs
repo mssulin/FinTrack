@@ -21,6 +21,8 @@ public class DashboardController(IDashboardService dashboardService, UserManager
         if (user == null)
             return RedirectToAction("SignIn", "Auth");
         
+        
+        
         var dto = await _dashboardService.GetDashboardAsync(user!.Id);
 
         var viewModel = new DashboardViewModel
