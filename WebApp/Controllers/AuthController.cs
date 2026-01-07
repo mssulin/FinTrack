@@ -46,6 +46,19 @@ public class AuthController : Controller
         ModelState.AddModelError("", "Fel email eller lösenord");
         return View(model);
     }
+    
+    [HttpGet]
+    public IActionResult SignUp()
+    {
+        return View(new SignUpViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignUp(SignUpViewModel model)
+    {
+        return View(model);
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
