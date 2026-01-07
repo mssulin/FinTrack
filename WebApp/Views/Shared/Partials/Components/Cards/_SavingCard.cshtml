@@ -44,8 +44,6 @@
                             </p>
                     </div>
                     
-                    @await Html.PartialAsync("Partials/Modals/_AddSavingDepositModal",
-                        new WebApp.ViewModels.AddToSavingViewModel { SavingId = saving.Id })
                     @await Html.PartialAsync("Partials/Modals/_SavingHistoryModal", saving.Id)
                 </div>
             }
