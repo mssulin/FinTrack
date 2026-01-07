@@ -19,23 +19,17 @@ public class AuthController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult SignIn()
     {
         return View(new SignInViewModel());
     }
 
-    [HttpGet]
-    public IActionResult SignIn()
-    {
-        return View("Index", new SignInViewModel());
-    }
-
     [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> SignIn(SignInViewModel model, string? returnUrl = null)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignIn(SignInViewModel model)
     {
         if (!ModelState.IsValid)
-            return View("Index", model);
+            return View(model);
 
         var result = await _signInManager.PasswordSignInAsync(
             model.Email,               
@@ -49,11 +43,12 @@ public class AuthController : Controller
             return RedirectToAction("Index", "Dashboard"); 
         }
 
-        ModelState.AddModelError("", "Fel e-post eller lösenord");
-        return View("Index", model);
+        ModelState.AddModelError("", "Fel email eller lösenord");
+        return View(model);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
