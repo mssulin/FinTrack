@@ -1,0 +1,20 @@
+@model WebApp.ViewModels.SignInViewModel
+
+@{
+    Layout = "_CleanLayout";
+}
+
+<div class="relative flex min-h-dvh items-center justify-center px-4 md:px-0">
+    
+    <div class="w-full max-w-md">
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="mb-3 inline-flex items-center gap-2
+          rounded-md px-2 py-1 text-sm text-gray-400
+          hover:bg-white/5 hover:text-white transition">
+            ← Till startsidan
+        </a>
+
+        @await Html.PartialAsync("Partials/Forms/_SignInForm")
+    </div>
+</div>
