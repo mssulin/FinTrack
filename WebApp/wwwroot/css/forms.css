@@ -1,0 +1,5 @@
+@layer components {
+    .form-field {
+        @apply flex flex-col gap-1;
+    }
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApp.Controllers;
 
 [AllowAnonymous]
+[Route("")]
 public class AuthController : Controller
 {
     private readonly SignInManager<UserEntity> _signInManager;
@@ -18,13 +19,13 @@ public class AuthController : Controller
         _userManager = userManager;
     }
 
-    [HttpGet]
+    [HttpGet("signin")]
     public IActionResult SignIn()
     {
         return View(new SignInViewModel());
     }
 
-    [HttpPost]
+    [HttpPost("signin")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignIn(SignInViewModel model)
     {
@@ -43,24 +44,50 @@ public class AuthController : Controller
             return RedirectToAction("Index", "Dashboard"); 
         }
 
-        ModelState.AddModelError("", "Fel email eller lösenord");
+        ModelState.AddModelError("", "Fel e-postadress eller lösenord");
         return View(model);
     }
     
-    [HttpGet]
+
+    [HttpGet("signup")]
     public IActionResult SignUp()
     {
         return View(new SignUpViewModel());
     }
 
-    [HttpPost]
+    [HttpPost("signup")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignUp(SignUpViewModel model)
     {
-        return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = new UserEntity
+        {
+            UserName = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email,
+        };
+        
+        var result = await _userManager.CreateAsync(user, model.Password);
+
+        if (!result.Succeeded)
+        {
+           
+            foreach (var err in result.Errors)
+                ModelState.AddModelError(string.Empty, err.Description);
+
+            return View(model);
+        }
+
+        await _signInManager.SignInAsync(user, isPersistent: false);
+
+        TempData["SuccessMessage"] = "Ditt konto har skapats! Välkommen till FinTrack.";
+        return RedirectToAction("Index", "Dashboard");
     }
 
-    [HttpPost]
+    [HttpPost("logout")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
