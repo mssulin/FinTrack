@@ -71,21 +71,40 @@ var localizationOptions = new RequestLocalizationOptions
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
-    
+
     var email = "demo@fintrack.se";
+    var password = "FinTrack123!?!";
+
     var user = await userManager.FindByEmailAsync(email);
 
     if (user == null)
     {
-        var newUser = new UserEntity
+        user = new UserEntity
         {
             UserName = email,
             Email = email,
             FirstName = "Demo",
             LastName = "User"
         };
-        
-        await userManager.CreateAsync(newUser, "Demo123!");
+
+        var createResult = await userManager.CreateAsync(user, password);
+        if (!createResult.Succeeded)
+        {
+            
+        }
+    }
+    else
+    {
+       
+        var hasPassword = await userManager.HasPasswordAsync(user);
+        if (hasPassword)
+            await userManager.RemovePasswordAsync(user);
+
+        var addPwResult = await userManager.AddPasswordAsync(user, password);
+        if (!addPwResult.Succeeded)
+        {
+           
+        }
     }
 }
 

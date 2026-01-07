@@ -8,13 +8,14 @@ using WebApp.ViewModels;
 namespace WebApp.Controllers;
 
 [Authorize]
+[Route("subscriptions")]
 public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISubService subService, UserManager<UserEntity> userManager) : Controller
 {
    private readonly IWebHostEnvironment _hostingEnvironment = hostingEnvironment;
    private readonly ISubService _subService = subService;
    private readonly UserManager<UserEntity> _userManager = userManager;
 
-   [HttpGet]
+   [HttpGet("")]
    public async Task<IActionResult> Index()
    {
       var user = await _userManager.GetUserAsync(User);
@@ -60,7 +61,8 @@ public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISub
       return View(vm);
    }
    
-   [HttpPost]
+   [HttpPost("add")]
+   [ValidateAntiForgeryToken]
    public async Task<IActionResult> AddSub(SubscriptionViewModel model)
    {
       if (!ModelState.IsValid)
@@ -110,7 +112,8 @@ public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISub
       return RedirectToAction("Index", "Dashboard");
    }
    
-   [HttpPost]
+   [HttpPost("delete/{id:int}")]
+   [ValidateAntiForgeryToken]
    public async Task<IActionResult> Delete(int id)
    {
       var sub = await _subService.GetSubByIdAsync(id);
@@ -123,8 +126,8 @@ public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISub
 
       return RedirectToAction("Index");
    }
-
-   [HttpPost("Subscription/Paid/{id}")]
+   
+   [HttpPost("paid/{id:int}")]
    [ValidateAntiForgeryToken]
    public async Task<IActionResult> Paid(int id)
    {

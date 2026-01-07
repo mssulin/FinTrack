@@ -8,13 +8,14 @@ using WebApp.ViewModels;
 namespace WebApp.Controllers;
 
 [Authorize]
+[Route("savings")]
 public class SavingsController(ISavingService savingService, UserManager<UserEntity> userManager)
   : Controller
 {
     private readonly ISavingService _savingService = savingService;
     private readonly UserManager<UserEntity> _userManager = userManager;
 
-    [HttpGet]
+    [HttpGet("")]
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -37,7 +38,7 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
         return View(model);
     }
     
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateSavingGoal(SavingViewModel model)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -54,10 +55,10 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
 
         await _savingService.CreateSavingGoalAsync(saving);
 
-        return RedirectToAction("Index", "Dashboard");
+        return RedirectToAction("Index", "Savings");
     }
 
-    [HttpPost]
+    [HttpPost("add")]
     public async Task<IActionResult> AddToSaving(AddToSavingViewModel model)
     {
         await _savingService.AddToSavingAsync(model.SavingId, model.Amount);
@@ -65,7 +66,7 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
     }
     
 
-    [HttpPost]
+    [HttpPost("delete/{id:int}")]
     public async Task<IActionResult> DeleteSaving(int id)
     {
         var save = await _savingService.GetSavingByIdAsync(id);
@@ -77,7 +78,7 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
         return RedirectToAction("Index");
     }
 
-    [HttpGet]
+    [HttpGet("history")]
     public async Task<IActionResult> History(int savingId)
     {
         var history = await _savingService.GetSavingHistoryBySavingIdAsync(savingId);
