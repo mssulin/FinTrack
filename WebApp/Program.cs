@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Data.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,9 +71,6 @@ var localizationOptions = new RequestLocalizationOptions
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
-    await db.Database.MigrateAsync();
 
     var email = "demo@fintrack.se";
     var password = "FinTrack123!?!";
@@ -111,9 +107,6 @@ using (var scope = app.Services.CreateScope())
             return;
         }
     }
-    
-    await DemoDataSeeder.SeedAsync(db, user.Id);
-    Console.WriteLine($"DB PATH: {dbPath}");
 }
 
 if (!app.Environment.IsDevelopment())
