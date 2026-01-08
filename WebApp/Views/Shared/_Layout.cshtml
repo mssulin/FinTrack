@@ -10,14 +10,23 @@
 </head>
 <body class="m-0 text-[16px] text-gray-200 font-[var(--font-sans)] not-italic bg-[#0F111A] font-medium pb-[calc(76px+env(safe-area-inset-bottom))]">
 
-  <div id="layout" class="min-h-dvh grid grid-cols-1 grid-rows-[auto_1fr_auto] gap-4
-                          lg:grid-cols-[250px_minmax(0,1fr)] lg:grid-rows-[1fr_auto] lg:gap-4 lg:p-4">
+<div id="layout"
+     class="min-h-dvh grid grid-cols-1 grid-rows-[auto_1fr_auto] gap-4
+
+            md:grid-cols-[240px_minmax(0,1fr)]
+            lg:grid-cols-[280px_minmax(0,1fr)]
+            xl:grid-cols-[320px_minmax(0,1fr)]
+
+            md:grid-rows-[1fr_auto]
+            md:gap-4 md:p-4">
     
     @await Html.PartialAsync("Partials/Components/Navbar/_NavbarPartial")
 
     <!-- Main -->
     <main class="min-w-0 lg:col-start-2">
-      @RenderBody()
+      <div class="w-full max-w-[2000px] px-4 pt-8 flex flex-col gap-6">
+        @RenderBody()
+      </div>
     </main>
 
     <!-- Footer-->

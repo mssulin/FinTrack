@@ -15,7 +15,6 @@
     @await Html.PartialAsync("Partials/Modals/_AddToSavingModal", Model)
 }
 
-<div class="flex flex-col gap-6 pt-8 px-4 md:px-6 lg:pt-1 lg:px-2">
     <header class="flex flex-col gap-2 text-center md:text-left">
         
         @if (TempData["SuccessMessage"] != null)
@@ -39,15 +38,14 @@
         </p>
     </header>
 
-    <section class="flex flex-col gap-4 px-4 md:flex-row md:gap-5 h-full w-full">
+    <section class="flex flex-col gap-4 md:flex-row md:gap-5 h-full w-full shrink-0">
         @await Html.PartialAsync("Partials/Components/_DashboardOverviewPartial", Model)
     </section>
 
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full h-full">
-      @await Html.PartialAsync("Partials/Components/_MonthlyOverviewPartial", Model)
-  </section>
-
-<section class="">
+    <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 w-full items-stretch min-h-0">
+        @await Html.PartialAsync("Partials/Components/_MonthlyOverviewPartial", Model)
+    </section>
+    
+<section class="shrink-0">
     @await Html.PartialAsync("Partials/Components/_SavingsOverviewPartial", Model.Savings)
 </section>
-</div>
