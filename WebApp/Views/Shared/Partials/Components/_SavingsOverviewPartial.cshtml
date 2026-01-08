@@ -18,7 +18,17 @@
                     : p < 70 ? "medium"
                     : "high";
 
-                <div class="flex flex-col items-center gap-3 card">
+                <div class="relative flex flex-col items-center gap-3 card">
+                    @if (saving.ProgressPercent >= 100)
+                    {
+                        <span class="absolute top-3 left-3 inline-flex items-center gap-2 rounded-full
+                                     border border-emerald-500/30 bg-emerald-500/10
+                                     px-2 py-1 text-[11px] text-emerald-200">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                            Mål uppnått
+                        </span>
+                    }
+                    
                     <!-- Donut -->
                     <div class="relative w-20 h-20 sm:w-24 sm:h-24">
                         <div class="donut absolute inset-0 rounded-full"

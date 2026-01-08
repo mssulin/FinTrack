@@ -14,11 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Db
-var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-var dataFolder = Path.Combine(appData, "FinTrackExam");
-Directory.CreateDirectory(dataFolder);
+var useExamDb = builder.Configuration.GetValue<bool>("Database:UseExamDb");
 
-var dbPath = Path.Combine(dataFolder, "exam.db");
+var dbPath = useExamDb
+    ? builder.Configuration["Database:ExamPath"]
+    : builder.Configuration["Database:PersonalPath"];
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
