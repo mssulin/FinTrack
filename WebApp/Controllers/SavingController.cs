@@ -9,7 +9,7 @@ namespace WebApp.Controllers;
 
 [Authorize]
 [Route("savings")]
-public class SavingsController(ISavingService savingService, UserManager<UserEntity> userManager)
+public class SavingController(ISavingService savingService, UserManager<UserEntity> userManager)
   : Controller
 {
     private readonly ISavingService _savingService = savingService;
@@ -55,7 +55,7 @@ public class SavingsController(ISavingService savingService, UserManager<UserEnt
 
         await _savingService.CreateSavingGoalAsync(saving);
 
-        return RedirectToAction("Index", "Savings");
+        return RedirectToAction("Index", "Saving");
     }
 
     [HttpPost("add")]
