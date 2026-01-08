@@ -2,22 +2,73 @@
 
 @{
     ViewData["Title"] = "Sparande";
+
+    var goals = Model?.ToList() ?? new List<WebApp.ViewModels.SavingViewModel>();
+    var count = goals.Count;
+
+    var totalSaved = goals.Sum(x => x.CurrentAmount);
 }
 
-<div class="main">
-    <div class="main-content">
-        <div class="header">
-            <div class="button-group">
-                <button id="add-save" class="btn header-button" data-modal-target="saving-goal-modal">
-                    <span>Nytt sparmål</span>
-                </button>
-            </div>
+<div class="space-y-6">
+    
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+            <h1 class="mt-3 text-2xl font-semibold text-white">Sparande</h1>
+            <p class="mt-1 text-sm text-gray-400">
+                Skapa sparmål och följ din utveckling över tid.
+            </p>
         </div>
 
-        <div id="savings-overview">
-            @await Html.PartialAsync("Partials/Components/Cards/_SavingCard", Model)
+        <div class="flex items-center gap-2">
+            <button id="add-save" data-modal-target="saving-goal-modal"
+                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white
+                           transition hover:bg-emerald-500 active:scale-[.99]">
+                <span class="text-lg leading-none">+</span>
+                <span>Nytt sparmål</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3 px-6 md:px-0">
+        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-center md:text-left">
+            <p class="text-xs font-semibold text-gray-300">Antal sparmål</p>
+            <p class="mt-2 text-xl font-bold text-white">@count</p>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-center md:text-left">
+            <p class="text-xs font-semibold text-gray-300">Totalt sparat</p>
+            <p class="mt-2 text-xl font-bold text-white">@totalSaved.ToString("N0") kr</p>
+            <p class="mt-1 text-xs text-gray-400">Summerar alla mål</p>
+        </div>
+    </div>
+    
+    <div class="mx-4 md:mx-0 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+        <div class="flex items-center justify-between gap-3">
+            <p class="text-sm font-semibold text-white">Översikt</p>
+        </div>
+
+        <div class="mt-4">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="rounded-xl border border-white/10 bg-black/20 p-6 text-center">
+                    <p class="text-sm font-medium text-white">Inga sparmål än</p>
+                    <p class="mt-1 text-sm text-gray-400">Skapa ditt första sparmål för att se översikten här.</p>
+
+                    <button data-modal-target="saving-goal-modal"
+                            class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white
+                                   transition hover:bg-emerald-500">
+                        <span class="text-lg leading-none">+</span>
+                        <span>Nytt sparmål</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                @await Html.PartialAsync("Partials/Components/Cards/_SavingCard", Model)
+            }
         </div>
     </div>
 </div>
 
-@await Html.PartialAsync("Partials/Modals/_CreateSavingGoalModal")   
+@await Html.PartialAsync("Partials/Modals/_CreateSavingGoalModal")
