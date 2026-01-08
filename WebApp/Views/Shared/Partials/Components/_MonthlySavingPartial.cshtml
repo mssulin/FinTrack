@@ -1,17 +1,18 @@
 @model WebApp.ViewModels.DashboardViewModel
 
-<div class="card relative flex flex-col justify-center p-6">
+<div class="group card relative flex flex-col justify-center p-6">
 
    <!-- Button -->
-   <button class="absolute top-3 right-3 inline-flex items-center gap-1
-                     px-2 py-1 text-[10px] font-medium
-                     text-sky-300 bg-sky-500/10 ring-1 ring-sky-500/>30 rounded-md
-                     shadow-sm hover:bg-sky-500/>20 hover:ring-sky-400/>40
-                     active:scale-[.98] transition
-                     sm:px-3 sm:py-1.5 sm:text-xs
-                     md:px-4 md:py-2 md:text-sm" data-modal-target="add-saving-modal">
-      <span class="material-icons text-[14px] sm:text-[16px] md:text-[18px]">add</span>
-      <span class="hidden sm:inline">Lägg till sparande</span>
+   <button data-modal-target="add-saving-modal"
+           class="absolute top-3 right-3 inline-flex items-center gap-1
+                   px-2 py-1 text-[11px] font-medium
+                   text-sky-300 bg-sky-500/10 ring-1 ring-sky-500/30 rounded-md
+                   shadow-sm transition duration-200
+                   opacity-100 md:opacity-0 group-hover:opacity-100
+                   hover:bg-sky-500/20 hover:ring-sky-400/40
+                   active:scale-[.98]">
+      <span class="material-icons text-[14px]">add</span>
+      <span class="hidden sm:inline">Lägg till</span>
    </button>
 
    <!-- Header -->
