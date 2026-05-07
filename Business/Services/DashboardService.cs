@@ -2,17 +2,20 @@ using System.Globalization;
 using Business.Dtos;
 using Business.Helpers;
 using Business.Interfaces;
-using Data.Entities; // behövs för SavingHistoryEntity
+using Data.Entities;
+using Microsoft.Extensions.Configuration; 
 
 namespace Business.Services;
 
 public class DashboardService(
+    IConfiguration config,
     ISavingService savingService,
     IExpenseService expenseService,
     IIncomeService incomeService,
     ISubService subService)
     : IDashboardService
 {
+    private readonly IConfiguration _config = config;
     private readonly IIncomeService _incomeService = incomeService;
     private readonly IExpenseService _expenseService = expenseService;
     private readonly ISubService _subService = subService;
@@ -21,9 +24,23 @@ public class DashboardService(
     public async Task<DashboardDto> GetDashboardAsync(string userId)
     {
         // Start och slutdatum för period (25:e varje månad)
-        var (startOfPeriod, endOfPeriod) = MonthlyPeriodCalculator.GetPeriod(DateTime.Now);
-        var start = startOfPeriod.Date;
-        var endInclusive = endOfPeriod.Date.AddDays(1).AddTicks(-1);
+        DateTime start;
+        DateTime endInclusive;
+        DateTime endOfPeriodForHeader;
+
+        if (_config.GetValue<bool>("DisableMonthlyReset"))
+        {
+            start = DateTime.MinValue;
+            endInclusive = DateTime.MaxValue;
+            endOfPeriodForHeader = DateTime.Now; 
+        }
+        else
+        {
+            var (startOfPeriod, endOfPeriod) = MonthlyPeriodCalculator.GetPeriod(DateTime.Now);
+            start = startOfPeriod.Date;
+            endInclusive = endOfPeriod.Date.AddDays(1).AddTicks(-1);
+            endOfPeriodForHeader = endOfPeriod;
+        }
 
         // Inkomster
         var incomes = await _incomeService.GetIncomesAsync(userId);
@@ -116,9 +133,9 @@ public class DashboardService(
             ? Math.Round((totalSavedThisMonth / totalIncome) * 100, 1)
             : 0;
 
-        // Formattering för nuvarande månad (för dashboard header)
+        // Formattering för nuvarande månad 
         var culture = new CultureInfo("sv-SE");
-        var currentMonth = culture.TextInfo.ToTitleCase(endOfPeriod.ToString("MMMM yyyy", culture));
+        var currentMonth = culture.TextInfo.ToTitleCase(endOfPeriodForHeader.ToString("MMMM yyyy", culture));
 
         return new DashboardDto
         {

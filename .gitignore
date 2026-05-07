@@ -16,9 +16,8 @@ WebApp/wwwroot/uploads/
 **/*.db-wal
 
 # Local settings / secrets
-appsettings.Private.json
-appsettings.Exam.json
-appsettings.*.local.json
+appsettings.json
+appsettings.Development.json
 
 # Node
 node_modules/

@@ -38,7 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images\" />
+      <Reference Include="Microsoft.Extensions.Configuration" />
     </ItemGroup>
 
 </Project>

@@ -41,5 +41,3 @@
         @apply mt-2 w-full rounded-md py-2 font-medium text-sm md:text-base bg-emerald-600 hover:bg-emerald-500;
     }
 }
-
-.test-modal-import { outline: 3px solid red; }

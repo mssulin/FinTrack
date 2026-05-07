@@ -14,6 +14,7 @@ namespace Data.Contexts
             Directory.CreateDirectory(dataFolder);
 
             var dbPath = Path.Combine(dataFolder, "exam.db");
+
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
             return new AppDbContext(optionsBuilder.Options);

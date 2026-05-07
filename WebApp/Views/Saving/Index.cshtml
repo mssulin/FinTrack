@@ -8,8 +8,6 @@
 
     var totalSaved = goals.Sum(x => x.CurrentAmount);
 }
-
-<div class="space-y-6">
     
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
@@ -69,6 +67,5 @@
             }
         </div>
     </div>
-</div>
 
 @await Html.PartialAsync("Partials/Modals/_CreateSavingGoalModal")
