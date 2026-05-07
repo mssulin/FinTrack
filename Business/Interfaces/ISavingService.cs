@@ -14,7 +14,7 @@ public interface ISavingService
 
     Task<SavingEntity?> GetSavingByIdAsync(int id);
     
-    Task UpdateSavingAsync(SavingEntity saving);
+    Task<SavingEntity?> UpdateSavingAsync(int id, SavingEntity updatedSaving, string userId);
     
     Task DeleteSavingAsync(SavingEntity saving);
     

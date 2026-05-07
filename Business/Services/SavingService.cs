@@ -83,6 +83,25 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
         return history.Where(h => h.SavingId == savingId)
             .OrderByDescending(h => h.Date);
     }
+    
+    public async Task<SavingEntity?> UpdateSavingAsync(
+        int id,
+        SavingEntity updatedSaving,
+        string userId)
+    {
+        var existingSaving = await _savingRepository.GetByIdAsync(id);
+
+        if (existingSaving == null || existingSaving.UserId != userId)
+            return null;
+
+        existingSaving.Title = updatedSaving.Title;
+        existingSaving.CurrentAmount = updatedSaving.CurrentAmount;
+        existingSaving.TargetAmount = updatedSaving.TargetAmount;
+
+        await _savingRepository.UpdateAsync(existingSaving);
+
+        return existingSaving;
+    }
 
     public async Task DeleteSavingAsync(SavingEntity saving)
     {

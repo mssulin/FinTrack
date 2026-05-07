@@ -6,7 +6,7 @@
 }
 
 <div class="py-2">
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         @foreach (var saving in items)
         {
             var left = saving.TargetAmount - saving.CurrentAmount;
@@ -97,12 +97,15 @@
 
         <!-- Redigera (placeholder) -->
         <button type="button"
+                onclick="document.getElementById('edit-saving-@saving.Id').classList.remove('hidden')"
                 class="inline-flex items-center justify-center rounded-md
-                       border border-white/10 bg-white/5
-                       px-3 py-2 text-xs font-medium text-gray-200
-                       transition hover:bg-white/10">
+               border border-white/10 bg-white/5
+               px-3 py-2 text-xs font-medium text-gray-200
+               transition hover:bg-white/10">
             Redigera
         </button>
+        
+        @await Html.PartialAsync("Partials/Modals/_EditSavingModal", saving)
 
         <!-- Radera -->
         <form asp-controller="Saving" asp-action="Delete" method="post"

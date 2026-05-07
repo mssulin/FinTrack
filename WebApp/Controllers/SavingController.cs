@@ -65,6 +65,27 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
         return RedirectToAction("Index", "Dashboard");
     }
     
+    [HttpPost("update")]
+    public async Task<IActionResult> Update(SavingViewModel model)
+    {
+        var userId = _userManager.GetUserId(User);
+
+        if (userId == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        var saving = new SavingEntity
+        {
+            Id = model.Id,
+            Title = model.Title,
+            CurrentAmount = model.CurrentAmount,
+            TargetAmount = model.TargetAmount,
+            UserId = userId
+        };
+
+        await _savingService.UpdateSavingAsync(model.Id, saving, userId);
+
+        return RedirectToAction("Index");
+    }
 
     [HttpPost("delete/{id:int}")]
     public async Task<IActionResult> DeleteSaving(int id)

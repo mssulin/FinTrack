@@ -1,18 +1,18 @@
-using Data.Entities;
+using Business.Dtos;
 
 namespace Business.Interfaces;
 
 public interface ISubService
 {
-    Task<SubscriptionEntity> AddSubAsync(SubscriptionEntity subscription);
-    
-    Task<IEnumerable<SubscriptionEntity>> GetSubsAsync();
-    
-    Task<SubscriptionEntity?> GetSubByIdAsync(int id);
-    
-    Task UpdateSubAsync(SubscriptionEntity subscription);
-    
-    Task DeleteSubAsync(SubscriptionEntity subscription);
+    Task<SubscriptionDto> AddSubAsync(SubscriptionDto subscription, string userId);
+
+    Task<IEnumerable<SubscriptionDto>> GetSubsAsync();
+
+    Task<SubscriptionDto?> GetSubByIdAsync(int id);
+
+    Task<SubscriptionDto?> UpdateSubAsync(int id, SubscriptionDto updatedSub, string userId);
+
+    Task DeleteSubAsync(int id, string userId);
 
     Task MarkPaidAsync(int id);
 }

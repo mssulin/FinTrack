@@ -3,136 +3,117 @@ using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Factories;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
 
 [Authorize]
 [Route("subscriptions")]
-public class SubscriptionController(IWebHostEnvironment hostingEnvironment, ISubService subService, UserManager<UserEntity> userManager) : Controller
+public class SubscriptionController(
+    IWebHostEnvironment hostingEnvironment,
+    ISubService subService,
+    UserManager<UserEntity> userManager) : Controller
 {
-   private readonly IWebHostEnvironment _hostingEnvironment = hostingEnvironment;
-   private readonly ISubService _subService = subService;
-   private readonly UserManager<UserEntity> _userManager = userManager;
+    private readonly IWebHostEnvironment _hostingEnvironment = hostingEnvironment;
+    private readonly ISubService _subService = subService;
+    private readonly UserManager<UserEntity> _userManager = userManager;
 
-   [HttpGet("")]
-   public async Task<IActionResult> Index()
-   {
-      var user = await _userManager.GetUserAsync(User);
-      if (user == null)
-         return RedirectToAction("SignIn", "Auth");
-    
-      var subs = await _subService.GetSubsAsync();
-      
-      foreach (var sub in subs)
-      {
-         if (DateTime.Now > sub.NextPaymentDate)
-         {
-            while (sub.NextPaymentDate <= DateTime.Now)
-            {
-               sub.NextPaymentDate = sub.Frequency switch
-               {
-                  "Månad"   => sub.NextPaymentDate.AddMonths(1),
-                  "Kvartal" => sub.NextPaymentDate.AddMonths(3),
-                  "År"      => sub.NextPaymentDate.AddYears(1),
-                  _         => sub.NextPaymentDate
-               };
-            }
+    [HttpGet("")]
+    public async Task<IActionResult> Index()
+    {
+        var user = await _userManager.GetUserAsync(User);
 
-            await _subService.UpdateSubAsync(sub);
-         }
-      }
+        if (user == null)
+            return RedirectToAction("SignIn", "Auth");
 
-      var vm = subs.Select(s => new SubscriptionViewModel
-         {
-            Id = s.Id,
-            Name = s.Name,
-            Amount = s.Amount,
-            LastPaymentDate = s.LastPaymentDate,
-            NextPaymentDate = s.NextPaymentDate,
-            Category = s.Category,
-            Frequency = s.Frequency,
-            ImageUrl = s.ImageUrl,
-            IsPaid = s.IsPaid,
-         })
-         .OrderBy(s => s.NextPaymentDate)
-         .ToList();
+        var subs = await _subService.GetSubsAsync();
 
-      return View(vm);
-   }
-   
-   [HttpPost("add")]
-   [ValidateAntiForgeryToken]
-   public async Task<IActionResult> AddSub(SubscriptionViewModel model)
-   {
-      if (!ModelState.IsValid)
-         return RedirectToAction("Index", "Dashboard");
+        var vm = subs
+            .Select(SubscriptionViewModelFactory.ToViewModel)
+            .OrderBy(s => s.NextPaymentDate)
+            .ToList();
 
-      string? fileName = null;
+        return View(vm);
+    }
 
-      if (model.Image != null)
-      {
-         var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-         Directory.CreateDirectory(uploads);
+    [HttpPost("add")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddSub(SubscriptionViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("Index", "Dashboard");
 
-         fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Image.FileName);
-         var filePath = Path.Combine(uploads, fileName);
+        var userId = _userManager.GetUserId(User);
 
-         using (var stream = new FileStream(filePath, FileMode.Create))
-         {
+        if (userId == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        if (model.Image != null)
+        {
+            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            Directory.CreateDirectory(uploads);
+
+            var fileName = Guid.NewGuid() + Path.GetExtension(model.Image.FileName);
+            var filePath = Path.Combine(uploads, fileName);
+
+            await using var stream = new FileStream(filePath, FileMode.Create);
             await model.Image.CopyToAsync(stream);
-         }
-         
-         model.ImageUrl = "/uploads/" + fileName;
-      }
-      
-      var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-      
-      var subscription = new SubscriptionEntity
-      {
-         Name = model.Name,
-         Amount = model.Amount,
-         LastPaymentDate = model.LastPaymentDate,
-         Category = model.Category,
-         Frequency = model.Frequency,
-         ImageUrl = model.ImageUrl,
-         UserId = userId!
-      };
-      
-      subscription.NextPaymentDate = subscription.Frequency switch
-      {
-         "Månad"   => subscription.LastPaymentDate.AddMonths(1),
-         "Kvartal" => subscription.LastPaymentDate.AddMonths(3),
-         "År"      => subscription.LastPaymentDate.AddYears(1),
-         _         => subscription.LastPaymentDate
-      };
-      
-      await _subService.AddSubAsync(subscription);
 
-      return RedirectToAction("Index", "Dashboard");
-   }
-   
-   [HttpPost("delete/{id:int}")]
-   [ValidateAntiForgeryToken]
-   public async Task<IActionResult> Delete(int id)
-   {
-      var sub = await _subService.GetSubByIdAsync(id);
-      if (sub == null)
-      {
-         return NotFound();
-      }
+            model.ImageUrl = "/uploads/" + fileName;
+        }
 
-      await _subService.DeleteSubAsync(sub);
+        model.NextPaymentDate = model.Frequency switch
+        {
+            "Månad" => model.LastPaymentDate.AddMonths(1),
+            "Kvartal" => model.LastPaymentDate.AddMonths(3),
+            "År" => model.LastPaymentDate.AddYears(1),
+            _ => model.LastPaymentDate
+        };
 
-      return RedirectToAction("Index");
-   }
-   
-   [HttpPost("paid/{id:int}")]
-   [ValidateAntiForgeryToken]
-   public async Task<IActionResult> Paid(int id)
-   {
-      await _subService.MarkPaidAsync(id);
-      
-      return RedirectToAction("Index", "Dashboard");
-   }
+        var subscription = SubscriptionViewModelFactory.ToDto(model);
+
+        await _subService.AddSubAsync(subscription, userId);
+
+        return RedirectToAction("Index", "Dashboard");
+    }
+
+    [HttpPost("update")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(SubscriptionViewModel model)
+    {
+        var userId = _userManager.GetUserId(User);
+
+        if (userId == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        var subscription = SubscriptionViewModelFactory.ToDto(model);
+
+        await _subService.UpdateSubAsync(model.Id, subscription, userId);
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost("delete/{id:int}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var userId = _userManager.GetUserId(User);
+
+        if (userId == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        await _subService.DeleteSubAsync(id, userId);
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost("paid/{id:int}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Paid(int id)
+    {
+        await _subService.MarkPaidAsync(id);
+
+        return RedirectToAction("Index", "Dashboard");
+    }
 }
