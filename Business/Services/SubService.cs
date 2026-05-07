@@ -1,5 +1,6 @@
+using Business.Dtos;
+using Business.Factories;
 using Business.Interfaces;
-using Data.Entities;
 using Data.Interfaces;
 
 namespace Business.Services;
@@ -8,41 +9,65 @@ public class SubService(ISubscriptionRepository subRepository) : ISubService
 {
     private readonly ISubscriptionRepository _subRepository = subRepository;
 
-    public async Task<SubscriptionEntity> AddSubAsync(SubscriptionEntity subscription)
+    public async Task<SubscriptionDto> AddSubAsync(SubscriptionDto subscription, string userId)
     {
-        return await _subRepository.AddAsync(subscription);
+        var entity = SubscriptionFactory.ToEntity(subscription, userId);
+
+        var result = await _subRepository.AddAsync(entity);
+
+        return SubscriptionFactory.ToDto(result);
     }
 
-    public async Task<IEnumerable<SubscriptionEntity>> GetSubsAsync()
+    public async Task<IEnumerable<SubscriptionDto>> GetSubsAsync()
     {
-        return await _subRepository.GetAllAsync();
+        var subscriptions = await _subRepository.GetAllAsync();
+
+        return subscriptions.Select(SubscriptionFactory.ToDto);
     }
 
-    public async Task<SubscriptionEntity?> GetSubByIdAsync(int id)
+    public async Task<SubscriptionDto?> GetSubByIdAsync(int id)
     {
-        return await _subRepository.GetByIdAsync(id);
+        var subscription = await _subRepository.GetByIdAsync(id);
+
+        if (subscription == null)
+            return null;
+
+        return SubscriptionFactory.ToDto(subscription);
     }
 
-    public async Task UpdateSubAsync(SubscriptionEntity subscription)
+    public async Task<SubscriptionDto?> UpdateSubAsync(int id, SubscriptionDto updatedSub, string userId)
     {
-        await _subRepository.UpdateAsync(subscription);
+        var existingSub = await _subRepository.GetByIdAsync(id);
+
+        if (existingSub == null || existingSub.UserId != userId)
+            return null;
+
+        SubscriptionFactory.UpdateEntity(existingSub, updatedSub);
+
+        await _subRepository.UpdateAsync(existingSub);
+
+        return SubscriptionFactory.ToDto(existingSub);
     }
 
-    public async Task DeleteSubAsync(SubscriptionEntity subscription)
+    public async Task DeleteSubAsync(int id, string userId)
     {
+        var subscription = await _subRepository.GetByIdAsync(id);
+
+        if (subscription == null || subscription.UserId != userId)
+            return;
+
         await _subRepository.DeleteAsync(subscription);
     }
 
-    // Beräknar nästa betalningsdatum när en prenumeration är markerad som betald
     public async Task MarkPaidAsync(int id)
     {
         var sub = await _subRepository.GetByIdAsync(id);
-        if (sub is null) return;
 
-        // Sätter senaste betalningsdatum till nuvarande tid
+        if (sub is null)
+            return;
+
         sub.LastPaymentDate = DateTime.Now;
 
-        // Uppdatera nästa betalningsdatum beroende på hur ofta den ska betalas
         sub.NextPaymentDate = sub.Frequency switch
         {
             "Månad" => sub.NextPaymentDate.AddMonths(1),
@@ -50,7 +75,6 @@ public class SubService(ISubscriptionRepository subRepository) : ISubService
             _ => sub.NextPaymentDate
         };
 
-        // Reset för prenumerationer när den är betald
         sub.IsPaid = false;
 
         await _subRepository.UpdateAsync(sub);

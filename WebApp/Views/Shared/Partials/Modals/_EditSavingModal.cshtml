@@ -36,7 +36,8 @@
                 <input name="CurrentAmount"
                        type="number"
                        step="0.01"
-                       value="@Model.CurrentAmount"
+                       min="0"
+                       value="@Model.CurrentAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)"
                        class="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" />
             </div>
 
@@ -45,7 +46,8 @@
                 <input name="TargetAmount"
                        type="number"
                        step="0.01"
-                       value="@Model.TargetAmount"
+                       min="0"
+                       value="@Model.TargetAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)"
                        class="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" />
             </div>
 
