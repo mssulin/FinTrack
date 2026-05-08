@@ -1,3 +1,4 @@
+using Business.Dtos;
 using Business.Interfaces;
 using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,9 @@ namespace WebApp.Controllers;
 
 [Authorize]
 [Route("savings")]
-public class SavingController(ISavingService savingService, UserManager<UserEntity> userManager)
-  : Controller
+public class SavingController(
+    ISavingService savingService,
+    UserManager<UserEntity> userManager) : Controller
 {
     private readonly ISavingService _savingService = savingService;
     private readonly UserManager<UserEntity> _userManager = userManager;
@@ -19,41 +21,44 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetUserAsync(User);
+
         if (user == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var savings = await _savingService.GetAllSavingsAsync(user!.Id);
+        var savings = await _savingService.GetAllSavingsAsync(user.Id);
 
         var model = savings
-            .OrderByDescending(s => s.TargetAmount > 0 
-            ? (decimal) s.CurrentAmount / s.TargetAmount : 0)
+            .OrderByDescending(s => s.TargetAmount > 0
+                ? s.CurrentAmount / s.TargetAmount
+                : 0)
             .Select(s => new SavingViewModel
-        {
-            Id = s.Id,
-            Title = s.Title,
-            CurrentAmount = s.CurrentAmount,
-            TargetAmount = s.TargetAmount
-        }).ToList();
+            {
+                Id = s.Id,
+                Title = s.Title,
+                CurrentAmount = s.CurrentAmount,
+                TargetAmount = s.TargetAmount
+            })
+            .ToList();
 
         return View(model);
     }
-    
+
     [HttpPost("create")]
     public async Task<IActionResult> CreateSavingGoal(SavingViewModel model)
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null)
+        var userId = _userManager.GetUserId(User);
+
+        if (userId == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var saving = new SavingEntity
+        var saving = new SavingDto
         {
-            UserId = user.Id,
             Title = model.Title,
             CurrentAmount = model.CurrentAmount,
-            TargetAmount = model.TargetAmount,
+            TargetAmount = model.TargetAmount
         };
 
-        await _savingService.CreateSavingGoalAsync(saving);
+        await _savingService.CreateSavingGoalAsync(saving, userId);
 
         return RedirectToAction("Index", "Saving");
     }
@@ -62,9 +67,10 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
     public async Task<IActionResult> AddToSaving(AddToSavingViewModel model)
     {
         await _savingService.AddToSavingAsync(model.SavingId, model.Amount);
+
         return RedirectToAction("Index", "Dashboard");
     }
-    
+
     [HttpPost("update")]
     public async Task<IActionResult> Update(SavingViewModel model)
     {
@@ -73,13 +79,12 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
         if (userId == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var saving = new SavingEntity
+        var saving = new SavingDto
         {
             Id = model.Id,
             Title = model.Title,
             CurrentAmount = model.CurrentAmount,
-            TargetAmount = model.TargetAmount,
-            UserId = userId
+            TargetAmount = model.TargetAmount
         };
 
         await _savingService.UpdateSavingAsync(model.Id, saving, userId);
@@ -90,11 +95,12 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
     [HttpPost("delete/{id:int}")]
     public async Task<IActionResult> DeleteSaving(int id)
     {
-        var save = await _savingService.GetSavingByIdAsync(id);
-        if (save == null)
-            return NotFound();
+        var userId = _userManager.GetUserId(User);
 
-        await _savingService.DeleteSavingAsync(save);
+        if (userId == null)
+            return RedirectToAction("SignIn", "Auth");
+
+        await _savingService.DeleteSavingAsync(id, userId);
 
         return RedirectToAction("Index");
     }
@@ -104,7 +110,7 @@ public class SavingController(ISavingService savingService, UserManager<UserEnti
     {
         var history = await _savingService.GetSavingHistoryBySavingIdAsync(savingId);
 
-        var model = history.Select(h => new SavingHistoryViewModel()
+        var model = history.Select(h => new SavingHistoryViewModel
         {
             Id = h.Id,
             SavingId = h.SavingId,

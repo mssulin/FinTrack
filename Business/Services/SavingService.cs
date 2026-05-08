@@ -1,31 +1,38 @@
+using Business.Dtos;
+using Business.Factories;
 using Business.Interfaces;
 using Data.Entities;
 using Data.Interfaces;
 
 namespace Business.Services;
 
-public class SavingService(ISavingRepository savingRepository, ISavingHistoryRepository savingHistoryRepository) : ISavingService
-
+public class SavingService(
+    ISavingRepository savingRepository,
+    ISavingHistoryRepository savingHistoryRepository) : ISavingService
 {
     private readonly ISavingRepository _savingRepository = savingRepository;
     private readonly ISavingHistoryRepository _savingHistoryRepository = savingHistoryRepository;
 
-    public async Task<SavingEntity> CreateSavingGoalAsync(SavingEntity saving)
+    public async Task<SavingDto> CreateSavingGoalAsync(SavingDto saving, string userId)
     {
-        return await _savingRepository.AddAsync(saving);
+        var entity = SavingFactory.ToEntity(saving, userId);
+
+        var result = await _savingRepository.AddAsync(entity);
+
+        return SavingFactory.ToDto(result);
     }
-    
-    // Insättning i sparmål
+
     public async Task AddToSavingAsync(int savingId, decimal amount)
     {
         var saving = await _savingRepository.GetByIdAsync(savingId);
-        if (saving is null) return;
 
-        // Öka nuvarande belopp
+        if (saving is null)
+            return;
+
         saving.CurrentAmount += amount;
+
         await _savingRepository.UpdateAsync(saving);
 
-        // Sparar i historiken
         await _savingHistoryRepository.AddAsync(new SavingHistoryEntity
         {
             SavingId = saving.Id,
@@ -35,43 +42,45 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
         });
     }
 
-    public async Task<IEnumerable<SavingEntity>> GetAllSavingsAsync(string userId)
-    {
-        return await _savingRepository.GetAllAsync(userId);
-    }
-    public async Task<SavingEntity?> GetSavingByIdAsync(int id)
-    {
-        return await _savingRepository.GetByIdAsync(id);
-    }
-    
-    // Sparhistorik
-    public async Task<decimal> GetTotalSavedInPeriodAsync(string userId, DateTime start, DateTime endInclusive)
+    public async Task<IEnumerable<SavingDto>> GetAllSavingsAsync(string userId)
     {
         var savings = await _savingRepository.GetAllAsync(userId);
+
+        return savings.Select(SavingFactory.ToDto);
+    }
+
+    public async Task<SavingDto?> GetSavingByIdAsync(int id)
+    {
+        var saving = await _savingRepository.GetByIdAsync(id);
+
+        if (saving == null)
+            return null;
+
+        return SavingFactory.ToDto(saving);
+    }
+
+    public async Task<decimal> GetTotalSavedInPeriodAsync(
+        string userId,
+        DateTime start,
+        DateTime endInclusive)
+    {
+        var savings = await _savingRepository.GetAllAsync(userId);
+
         return savings
             .SelectMany(s => s.SavingHistory ?? Enumerable.Empty<SavingHistoryEntity>())
             .Where(h => h.Date >= start && h.Date <= endInclusive)
             .Sum(h => h.Amount);
     }
 
-    public async Task UpdateSavingAsync(SavingEntity saving)
-    {
-        await _savingRepository.UpdateAsync(saving);
-    }
-
-    public async Task AddSavingHistoryAsync(SavingHistoryEntity history)
-    {
-        await _savingHistoryRepository.AddAsync(history);
-    }
-
     public async Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryAsync(int savingId)
     {
-       var history = await _savingHistoryRepository.GetAllAsync();
-       return history.Where(s => s.SavingId == savingId)
-           .OrderByDescending(s => s.Date);
+        var history = await _savingHistoryRepository.GetAllAsync();
+
+        return history
+            .Where(s => s.SavingId == savingId)
+            .OrderByDescending(s => s.Date);
     }
-    
-    
+
     public async Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryAsync(string userId)
     {
         return await _savingHistoryRepository.GetAllAsync(userId);
@@ -80,13 +89,15 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
     public async Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryBySavingIdAsync(int savingId)
     {
         var history = await _savingHistoryRepository.GetAllAsync();
-        return history.Where(h => h.SavingId == savingId)
+
+        return history
+            .Where(h => h.SavingId == savingId)
             .OrderByDescending(h => h.Date);
     }
-    
-    public async Task<SavingEntity?> UpdateSavingAsync(
+
+    public async Task<SavingDto?> UpdateSavingAsync(
         int id,
-        SavingEntity updatedSaving,
+        SavingDto updatedSaving,
         string userId)
     {
         var existingSaving = await _savingRepository.GetByIdAsync(id);
@@ -94,17 +105,20 @@ public class SavingService(ISavingRepository savingRepository, ISavingHistoryRep
         if (existingSaving == null || existingSaving.UserId != userId)
             return null;
 
-        existingSaving.Title = updatedSaving.Title;
-        existingSaving.CurrentAmount = updatedSaving.CurrentAmount;
-        existingSaving.TargetAmount = updatedSaving.TargetAmount;
+        SavingFactory.UpdateEntity(existingSaving, updatedSaving);
 
         await _savingRepository.UpdateAsync(existingSaving);
 
-        return existingSaving;
+        return SavingFactory.ToDto(existingSaving);
     }
 
-    public async Task DeleteSavingAsync(SavingEntity saving)
+    public async Task DeleteSavingAsync(int id, string userId)
     {
+        var saving = await _savingRepository.GetByIdAsync(id);
+
+        if (saving == null || saving.UserId != userId)
+            return;
+
         await _savingRepository.DeleteAsync(saving);
     }
 }

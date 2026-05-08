@@ -1,25 +1,30 @@
+using Business.Dtos;
 using Data.Entities;
 
 namespace Business.Interfaces;
 
 public interface ISavingService
 {
-    Task<SavingEntity> CreateSavingGoalAsync(SavingEntity saving);
-    
+    Task<SavingDto> CreateSavingGoalAsync(SavingDto saving, string userId);
+
     Task AddToSavingAsync(int savingId, decimal amount);
-    
-    Task<IEnumerable<SavingEntity>> GetAllSavingsAsync(string userId);
 
-    public Task<decimal> GetTotalSavedInPeriodAsync(string userId, DateTime start, DateTime endInclusive);
+    Task<IEnumerable<SavingDto>> GetAllSavingsAsync(string userId);
 
-    Task<SavingEntity?> GetSavingByIdAsync(int id);
-    
-    Task<SavingEntity?> UpdateSavingAsync(int id, SavingEntity updatedSaving, string userId);
-    
-    Task DeleteSavingAsync(SavingEntity saving);
-    
-    Task AddSavingHistoryAsync(SavingHistoryEntity history);
+    Task<decimal> GetTotalSavedInPeriodAsync(string userId, DateTime start, DateTime endInclusive);
+
+    Task<SavingDto?> GetSavingByIdAsync(int id);
+
+    Task<SavingDto?> UpdateSavingAsync(
+        int id,
+        SavingDto updatedSaving,
+        string userId);
+
+    Task DeleteSavingAsync(int id, string userId);
+
     Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryAsync(string userId);
-    
+
+    Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryAsync(int savingId);
+
     Task<IEnumerable<SavingHistoryEntity>> GetSavingHistoryBySavingIdAsync(int savingId);
 }
