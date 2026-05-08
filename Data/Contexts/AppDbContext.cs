@@ -25,5 +25,33 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .HasOne(s => s.Saving)
             .WithMany(s => s.SavingHistory)
             .HasForeignKey(s => s.SavingId);
+
+        builder.Entity<ExpenseEntity>()
+            .Property(e => e.Amount)
+            .HasPrecision(18, 2);
+
+        builder.Entity<IncomeEntity>()
+            .Property(i => i.Amount)
+            .HasPrecision(18, 2);
+
+        builder.Entity<SubscriptionEntity>()
+            .Property(s => s.Amount)
+            .HasPrecision(18, 2);
+
+        builder.Entity<SavingEntity>()
+            .Property(s => s.CurrentAmount)
+            .HasPrecision(18, 2);
+
+        builder.Entity<SavingEntity>()
+            .Property(s => s.TargetAmount)
+            .HasPrecision(18, 2);
+
+        builder.Entity<SavingEntity>()
+            .Property(s => s.Monthly)
+            .HasPrecision(18, 2);
+
+        builder.Entity<SavingHistoryEntity>()
+            .Property(s => s.Amount)
+            .HasPrecision(18, 2);
     }
 }

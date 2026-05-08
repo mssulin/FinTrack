@@ -14,14 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Db
-var useExamDb = builder.Configuration.GetValue<bool>("Database:UseExamDb");
-
-var dbPath = useExamDb
-    ? builder.Configuration["Database:ExamPath"]
-    : builder.Configuration["Database:PersonalPath"];
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite($"Data Source={dbPath}"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Identity
 builder.Services.AddIdentity<UserEntity, IdentityRole>(options =>
@@ -67,47 +62,6 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedCultures = new[] { sv },
     SupportedUICultures = new[] { sv }
 };
-
-using (var scope = app.Services.CreateScope())
-{
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserEntity>>();
-
-    var email = "demo@fintrack.se";
-    var password = "FinTrack123!?!";
-
-    var user = await userManager.FindByEmailAsync(email);
-
-    if (user == null)
-    {
-        user = new UserEntity
-        {
-            UserName = email,
-            Email = email,
-            FirstName = "Demo",
-            LastName = "User"
-        };
-
-        var createResult = await userManager.CreateAsync(user, password);
-        if (!createResult.Succeeded)
-        {
-            return;
-        }
-    }
-    else
-    {
- 
-        var hasPassword = await userManager.HasPasswordAsync(user);
-        if (hasPassword)
-            await userManager.RemovePasswordAsync(user);
-
-        var addPwResult = await userManager.AddPasswordAsync(user, password);
-        if (!addPwResult.Succeeded)
-        {
-            
-            return;
-        }
-    }
-}
 
 if (!app.Environment.IsDevelopment())
 {
