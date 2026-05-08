@@ -1,23 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
-namespace Data.Contexts
+namespace Data.Contexts;
+
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    public AppDbContext CreateDbContext(string[] args)
     {
-        public AppDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                          ?? "Development";
 
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dataFolder = Path.Combine(appData, "FinTrackExam");
-            Directory.CreateDirectory(dataFolder);
+        var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../WebApp");
 
-            var dbPath = Path.Combine(dataFolder, "exam.db");
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(basePath)
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .Build();
 
-            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            return new AppDbContext(optionsBuilder.Options);
-        }
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+
+        optionsBuilder.UseSqlServer(connectionString);
+
+        return new AppDbContext(optionsBuilder.Options);
     }
 }
