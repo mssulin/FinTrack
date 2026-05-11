@@ -34,8 +34,7 @@
 
     html, body {
         @apply m-0 text-[16px] text-gray-200 bg-[var(--color-page-bg)]
-        font-sans not-italic font-medium
-        pb-[calc(76px+env(safe-area-inset-bottom))];
+        font-sans not-italic font-medium;
         color: #E5E7EB;
         font-family: var(--font-sans);
         background-color: #0F111A !important;
