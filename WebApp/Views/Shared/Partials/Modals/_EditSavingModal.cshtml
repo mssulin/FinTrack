@@ -9,12 +9,6 @@
             <h2 class="text-lg font-semibold text-white">
                 Redigera sparmål
             </h2>
-
-            <button type="button"
-                    onclick="document.getElementById('edit-saving-@Model.Id').classList.add('hidden')"
-                    class="text-gray-400 hover:text-white">
-                ✕
-            </button>
         </div>
 
         <form asp-controller="Saving"
@@ -25,41 +19,41 @@
             <input type="hidden" name="Id" value="@Model.Id" />
 
             <div>
-                <label class="text-xs font-medium text-gray-300">Titel</label>
+                <label class="modal-label">Titel</label>
                 <input name="Title"
                        value="@Model.Title"
-                       class="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" />
+                       class="modal-input--edit" />
             </div>
 
             <div>
-                <label class="text-xs font-medium text-gray-300">Sparat belopp</label>
+                <label class="modal-label">Sparat belopp</label>
                 <input name="CurrentAmount"
                        type="number"
                        step="0.01"
                        min="0"
                        value="@Model.CurrentAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-                       class="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" />
+                       class="modal-input--edit" />
             </div>
 
             <div>
-                <label class="text-xs font-medium text-gray-300">Målbelopp</label>
+                <label class="modal-label">Målbelopp</label>
                 <input name="TargetAmount"
                        type="number"
                        step="0.01"
                        min="0"
                        value="@Model.TargetAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-                       class="mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white" />
+                       class="modal-input--edit" />
             </div>
 
             <div class="flex justify-end gap-2 pt-3">
                 <button type="button"
                         onclick="document.getElementById('edit-saving-@Model.Id').classList.add('hidden')"
-                        class="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-xs text-gray-300 hover:bg-white/10">
+                        class="modal-btn--cancel">
                     Avbryt
                 </button>
 
                 <button type="submit"
-                        class="rounded-md bg-sky-500 px-4 py-2 text-xs font-semibold text-white hover:bg-sky-400">
+                        class="modal-btn--save">
                     Spara
                 </button>
             </div>

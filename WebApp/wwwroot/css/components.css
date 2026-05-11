@@ -1,0 +1,45 @@
+@layer components {
+    
+    .navbar-icon {
+        @apply text-[22px] lg:text-[18px] leading-none select-none;
+    }
+    
+    .summary-badge {
+        @apply self-center md:self-start lg:self-start inline-flex items-center gap-2 text-xs font-semibold
+        rounded-md px-2.5 py-1;
+    }
+
+    .summary-value {
+        @apply text-lg font-bold mt-8;
+    }
+    
+    .summary-dot {
+        @apply w-2 h-2 rounded-full;
+    }
+    
+    .card-accent-line {
+        @apply h-[2px] w-20 sm:w-28 mt-2 bg-gradient-to-r;
+    }
+    
+    .section-overview {
+        @apply mx-4 md:mx-0 rounded-2xl border border-white/10 bg-white/[0.03] p-6;
+    }
+    
+    .list-card-icon {
+        @apply h-12 w-12 rounded-xl bg-white/5 ring-1 ring-white/10 flex items-center justify-center text-xl;
+    }
+    
+    .list-card-tag {
+        @apply inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-gray-300;
+    }
+    
+    .list-card-info {
+        @apply rounded-xl border border-white/10 bg-black/20 p-3;
+    }
+    
+    .list-card-actions {
+        @apply mt-5 flex items-center justify-end gap-2
+        transition duration-200
+        group-hover:opacity-100;
+    }
+}

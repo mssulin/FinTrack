@@ -37,7 +37,7 @@
         @apply mt-1 w-full rounded-md bg-slate-800 border border-slate-700 p-2 text-sm md:text-base;
     }
     
-    .modal-submit {
-        @apply mt-2 w-full rounded-md py-2 font-medium text-sm md:text-base bg-emerald-600 hover:bg-emerald-500;
+    .modal-input--edit {
+        @apply mt-1 w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm text-white;
     }
 }

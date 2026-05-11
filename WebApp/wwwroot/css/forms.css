@@ -2,4 +2,8 @@
     .form-field {
         @apply flex flex-col gap-1;
     }
+    
+    .auth-form {
+        @apply flex flex-col gap-4;
+    }
 }
