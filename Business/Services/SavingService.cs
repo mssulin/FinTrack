@@ -95,10 +95,7 @@ public class SavingService(
             .OrderByDescending(h => h.Date);
     }
 
-    public async Task<SavingDto?> UpdateSavingAsync(
-        int id,
-        SavingDto updatedSaving,
-        string userId)
+    public async Task<SavingDto?> UpdateSavingAsync(int id, SavingDto updatedSaving, string userId)
     {
         var existingSaving = await _savingRepository.GetByIdAsync(id);
 

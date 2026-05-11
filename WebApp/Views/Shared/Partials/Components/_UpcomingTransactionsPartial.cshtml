@@ -2,8 +2,7 @@
 
 <div class="flex">
 <div class="card w-full h-full flex flex-col p-4 sm:p-5 lg:p-6">
-
-  <!-- Header -->
+  
   <div class="mb-4 sm:mb-5"><h3 class="dashboard-card-title">
       <span class="dashboard-card-icon">📅</span>
       Kommande utgifter (14 dagar)
@@ -34,8 +33,7 @@
 
           <div class="py-3 sm:py-4">
             <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] items-center gap-3 md:gap-4">
-
-              <!-- Titel -->
+              
               <div class="flex items-center gap-3 min-w-0">
                 <img src="@sub.ImageUrl" alt="@sub.Name"
                      class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover ring-1 ring-white/10" />
@@ -44,15 +42,13 @@
                 </p>
               </div>
 
-              <!-- Days-left -->
               <div class="flex items-center justify-between md:justify-end gap-3">
                 <span class="@($"inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-md ring-1 {badgeClass}")">
                   <span class="w-1.5 h-1.5 rounded-full
                     @(daysLeft <= 0 ? "bg-rose-400" : (daysLeft <= 3 ? "bg-amber-400" : "bg-white/40"))"></span>
                   @daysText
                 </span>
-
-                <!-- Paid button -->
+                
                 <form asp-controller="Subscription" asp-action="Paid" asp-route-id="@sub.Id" method="post">
                   @Html.AntiForgeryToken()
                   <button type="submit"

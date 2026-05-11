@@ -3,7 +3,6 @@ namespace Business.Helpers;
 
 public static class MonthlyPeriodCalculator
 {
-    // Justerar 25:e varje månad till närmaste fredag
     private static DateTime AdjustPayDay(DateTime date)
     {
         if (date.DayOfWeek == DayOfWeek.Saturday)

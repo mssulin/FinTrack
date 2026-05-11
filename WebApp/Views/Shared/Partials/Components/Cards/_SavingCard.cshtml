@@ -13,8 +13,6 @@
             if (left < 0) left = 0;
 
             <div class="group list-card">
-
-                <!-- Top -->
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="list-card-icon text-xl">
@@ -33,8 +31,7 @@
                         @saving.ProgressPercent%
                     </span>
                 </div>
-
-                <!-- Progress -->
+                
                 <div class="mt-5">
                     <div class="flex items-center justify-between text-xs">
                         <p class="text-gray-400">Progress</p>
@@ -49,8 +46,7 @@
                              style="width:@saving.ProgressPercent%"></div>
                     </div>
                 </div>
-
-                <!-- Mini stats -->
+                
                 <div class="mt-4 grid grid-cols-2 gap-3">
                     <div class="list-card-info">
                         <p class="text-[11px] font-semibold text-gray-300">Sparat</p>
@@ -64,8 +60,7 @@
                 </div>
                 
             <div class="list-card-actions">
-
-    <!-- Status -->
+                
     <div class="text-xs text-gray-400">
         @if (saving.ProgressPercent >= 100)
         {
@@ -86,14 +81,11 @@
             </span>
         }
     </div>
-
-    <!-- Actions -->
+    
     <div class="flex items-center gap-2 shrink-0">
-
-        <!-- Historik -->
+        
         @await Html.PartialAsync("Partials/Modals/_SavingHistoryModal", saving.Id)
-
-        <!-- Redigera (placeholder) -->
+        
         <button type="button"
                 onclick="document.getElementById('edit-saving-@saving.Id').classList.remove('hidden')"
                 class="list-card-btn list-card-btn--edit">
@@ -101,8 +93,7 @@
         </button>
         
         @await Html.PartialAsync("Partials/Modals/_EditSavingModal", saving)
-
-        <!-- Radera -->
+        
         <form asp-controller="Saving" asp-action="Delete" method="post"
               onsubmit="return confirm('Är du säker på att du vill radera detta sparmål?');">
             <input type="hidden" name="id" value="@saving.Id" />

@@ -1,5 +1,4 @@
 
-    <!-- Inkomster-->
     <div class="group card summary-card">
         <button id="add-income-btn"
                 data-modal-target="add-income-modal"
@@ -14,8 +13,7 @@
         </span>
         <p class="summary-value">+@Model.TotalIncome.ToString("N0") kr</p>
     </div>
-
-    <!-- Utgifter -->
+    
     <div class="group card summary-card">
         <button id="add-expense-btn"
                 data-modal-target="add-expense-modal"
@@ -29,9 +27,7 @@
         </span>
     <p class="summary-value">-@Model.TotalExpenses.ToString("N0") kr</p>
     </div>
-
-
-    <!-- Prenumerationer -->
+    
     <div class="card summary-card">
     <span class="summary-badge
              bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30">
@@ -40,8 +36,7 @@
     </span>
         <p class="summary-value">@Model.TotalSubscriptions.ToString("N0") kr</p>
     </div>
-
-    <!-- På kontot -->
+    
     <div class="card summary-card">
     <span class="summary-badge
              bg-sky-500/10 text-sky-300 ring-1 ring-sky-500/30">
