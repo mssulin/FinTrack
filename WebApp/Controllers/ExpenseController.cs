@@ -3,6 +3,7 @@ using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Mappers;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
@@ -23,13 +24,7 @@ public class ExpenseController(IExpenseService expenseService, UserManager<UserE
         if (user == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var expense = new ExpenseEntity
-        {
-            Date = DateTime.Now,
-            Amount = model.Amount,
-            Category = model.Category,
-            UserId = user!.Id
-        };
+        var expense = ExpenseMapper.ToEntity(model, user.Id);
 
         await expenseService.AddExpenseAsync(expense);
 

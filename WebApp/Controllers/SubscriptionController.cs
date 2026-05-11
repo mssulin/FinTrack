@@ -3,7 +3,7 @@ using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Factories;
+using WebApp.Mappers;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
@@ -30,7 +30,7 @@ public class SubscriptionController(
         var subs = await _subService.GetSubsAsync();
 
         var vm = subs
-            .Select(SubscriptionViewModelFactory.ToViewModel)
+            .Select(SubscriptionMapper.ToViewModel)
             .OrderBy(s => s.NextPaymentDate)
             .ToList();
 
@@ -71,7 +71,7 @@ public class SubscriptionController(
             _ => model.LastPaymentDate
         };
 
-        var subscription = SubscriptionViewModelFactory.ToDto(model);
+        var subscription = SubscriptionMapper.ToDto(model);
 
         await _subService.AddSubAsync(subscription, userId);
 
@@ -87,7 +87,7 @@ public class SubscriptionController(
         if (userId == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var subscription = SubscriptionViewModelFactory.ToDto(model);
+        var subscription = SubscriptionMapper.ToDto(model);
 
         await _subService.UpdateSubAsync(model.Id, subscription, userId);
 

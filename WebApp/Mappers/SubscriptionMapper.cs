@@ -1,9 +1,9 @@
 using Business.Dtos;
 using WebApp.ViewModels;
 
-namespace WebApp.Factories;
+namespace WebApp.Mappers;
 
-public static class SubscriptionViewModelFactory
+public class SubscriptionMapper
 {
     public static SubscriptionDto ToDto(SubscriptionViewModel model)
     {

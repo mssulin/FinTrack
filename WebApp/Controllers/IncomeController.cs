@@ -3,6 +3,7 @@ using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Mappers;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
@@ -24,12 +25,7 @@ public class IncomeController(IIncomeService incomeService, UserManager<UserEnti
         if (user == null)
             return RedirectToAction("SignIn", "Auth");
         
-        var entity = new IncomeEntity
-        {
-            Source = model.NewIncome.Source,
-            Amount = model.NewIncome.Amount,
-            UserId = user.Id,
-        };
+        var entity = IncomeMapper.ToEntity(model, user.Id);
 
         await _incomeService.AddIncomeAsync(entity);
 

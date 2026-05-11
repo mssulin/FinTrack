@@ -4,6 +4,7 @@ using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Mappers;
 using WebApp.ViewModels;
 
 namespace WebApp.Controllers;
@@ -79,13 +80,7 @@ public class SavingController(
         if (userId == null)
             return RedirectToAction("SignIn", "Auth");
 
-        var saving = new SavingDto
-        {
-            Id = model.Id,
-            Title = model.Title,
-            CurrentAmount = model.CurrentAmount,
-            TargetAmount = model.TargetAmount
-        };
+        var saving = SavingMapper.ToDto(model);
 
         await _savingService.UpdateSavingAsync(model.Id, saving, userId);
 
