@@ -1,68 +1,53 @@
 
     <!-- Inkomster-->
-    <div class="group card flex-1 relative flex flex-col items-center justify-center p-6">
+    <div class="group card summary-card">
         <button id="add-income-btn"
                 data-modal-target="add-income-modal"
-                class="absolute top-3 right-3 inline-flex items-center gap-1
-                   px-2 py-1 text-[11px] font-medium
-                   text-emerald-300 bg-emerald-500/10 ring-1 ring-emerald-500/30 rounded-md
-                   shadow-sm transition duration-200
-                   hover:bg-emerald-500/20 hover:ring-emerald-400/40
-                   active:scale-[.98]">
+                class="summary-action-btn summary-action-btn--income">
             <span class="material-icons text-[14px]">add</span>
         </button>
 
-        <span class="self-center md:self-start lg:self-start inline-flex items-center gap-2 text-xs font-semibold
-             rounded-md px-2.5 py-1
+        <span class="summary-badge
              bg-emerald-500/10 text-emerald-300 ring-1 ring-emerald-500/30">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span class="summary-dot bg-emerald-400"></span>
         Inkomst
         </span>
-        <p class="text-lg font-bold mt-8">+@Model.TotalIncome.ToString("N0") kr</p>
+        <p class="summary-value">+@Model.TotalIncome.ToString("N0") kr</p>
     </div>
 
     <!-- Utgifter -->
-    <div class="group card flex-1 relative flex flex-col items-center justify-center p-6">
+    <div class="group card summary-card">
         <button id="add-expense-btn"
                 data-modal-target="add-expense-modal"
-                class="absolute top-3 right-3 inline-flex items-center gap-1
-                   px-2 py-1 text-[11px] font-medium
-                   text-rose-300 bg-rose-500/10 ring-1 ring-rose-500/30 rounded-md
-                   shadow-sm transition duration-200
-                   hover:bg-rose-500/20 hover:ring-rose-400/40
-                   active:scale-[.98]">
+                class="summary-action-btn summary-action-btn--expense">
             <span class="material-icons text-[14px]">add</span>
         </button>
-        <span class="self-center md:self-start lg:self-start inline-flex items-center gap-2 text-xs font-semibold
-             rounded-md px-2.5 py-1
+        <span class="summary-badge
              bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/30">
-        <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+        <span class="summary-dot bg-rose-400"></span>
         Utgifter
         </span>
-    <p class="text-lg font-bold mt-8">-@Model.TotalExpenses.ToString("N0") kr</p>
+    <p class="summary-value">-@Model.TotalExpenses.ToString("N0") kr</p>
     </div>
 
 
     <!-- Prenumerationer -->
-    <div class="card flex-1 relative flex flex-col items-center justify-center p-6">
-    <span class="self-center md:self-start lg:self-start inline-flex items-center gap-2 text-xs font-semibold
-             rounded-md px-2.5 py-1
+    <div class="card summary-card">
+    <span class="summary-badge
              bg-amber-500/10 text-amber-300 ring-1 ring-amber-500/30">
-    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+    <span class="summary-dot bg-amber-400"></span>
     Prenumerationer
     </span>
-
-        <p class="text-lg font-bold mt-8">@Model.TotalSubscriptions.ToString("N0") kr</p>
+        <p class="summary-value">@Model.TotalSubscriptions.ToString("N0") kr</p>
     </div>
 
     <!-- På kontot -->
-    <div class="card flex-1 relative flex flex-col items-center justify-center p-6">
-    <span class="self-center md:self-start lg:self-start inline-flex items-center gap-2 text-xs font-semibold
-             rounded-md px-2.5 py-1
+    <div class="card summary-card">
+    <span class="summary-badge
              bg-sky-500/10 text-sky-300 ring-1 ring-sky-500/30">
-    <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+    <span class="summary-dot bg-sky-400"></span>
     På kontot
     </span>
-        <p class="text-lg font-bold mt-8">@Model.AvailableMoney.ToString("N0") kr</p>
+        <p class="summary-value">@Model.AvailableMoney.ToString("N0") kr</p>
     </div>
     

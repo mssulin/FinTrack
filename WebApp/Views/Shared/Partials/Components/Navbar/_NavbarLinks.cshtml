@@ -10,20 +10,20 @@
 
     <a asp-controller="Dashboard" asp-action="Index"
        class="navlink @(c=="Dashboard" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
-        <span class="text-[22px] lg:text-[18px] leading-none select-none">🏠</span>
-        <span class="hidden lg:inline lg:text-[14px]">Dashboard</span>
+        <span class="navbar-icon">🏠</span>
+        <span class="navbar-label">Dashboard</span>
     </a>
 
     <a asp-controller="Subscription" asp-action="Index"
        class="navlink @(c=="Subscription" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
-        <span class="text-[22px] lg:text-[18px] leading-none select-none">💳</span>
-        <span class="hidden lg:inline lg:text-[14px]">Prenumerationer</span>
+        <span class="navbar-icon">💳</span>
+        <span class="navbar-label">Prenumerationer</span>
     </a>
 
     <a asp-controller="Saving" asp-action="Index"
-       class="navlink @(c=="Savings" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
-        <span class="text-[22px] lg:text-[18px] leading-none select-none">💰</span>
-        <span class="hidden lg:inline lg:text-[14px]">Sparande</span>
+       class="navlink @(c=="Saving" && a=="Index" ? "navlink-active-sm navlink-active-md" : "navlink-md-inactive")">
+        <span class="navbar-icon">💰</span>
+        <span class="navbar-label">Sparande</span>
     </a>
 
     <!-- Logout -->
@@ -33,7 +33,7 @@
                 class="w-full h-[40px] rounded-[10px] border text-[var(--navbar-text-color)]
                border-[color:var(--color-btn-border)] flex items-center justify-center gap-2
                hover:opacity-90 transition no-underline">
-            <span class="text-[18px] leading-none select-none">🚪</span>
+            <span class="navbar-icon">🚪</span>
             <span class="text-sm">Logga ut</span>
         </button>
     </form>

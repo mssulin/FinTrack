@@ -12,13 +12,12 @@
             var left = saving.TargetAmount - saving.CurrentAmount;
             if (left < 0) left = 0;
 
-            <div class="group rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm transition
-                        hover:border-white/15 hover:bg-white/[0.06]">
+            <div class="group list-card">
 
                 <!-- Top -->
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
-                        <div class="h-12 w-12 rounded-xl bg-white/5 ring-1 ring-white/10 flex items-center justify-center text-xl">
+                        <div class="list-card-icon text-xl">
                             @EmojiHelper.GetEmoji(saving.Title)
                         </div>
 
@@ -30,7 +29,7 @@
                         </div>
                     </div>
 
-                    <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-gray-300">
+                    <span class="list-card-tag">
                         @saving.ProgressPercent%
                     </span>
                 </div>
@@ -53,7 +52,7 @@
 
                 <!-- Mini stats -->
                 <div class="mt-4 grid grid-cols-2 gap-3">
-                    <div class="rounded-xl border border-white/10 bg-black/20 p-3">
+                    <div class="list-card-info">
                         <p class="text-[11px] font-semibold text-gray-300">Sparat</p>
                         <p class="mt-1 text-sm font-semibold text-white">@saving.CurrentAmount.ToString("N0") kr</p>
                     </div>
@@ -64,8 +63,7 @@
                     </div>
                 </div>
                 
-<div class="mt-5 flex items-center justify-between gap-3
-            opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+            <div class="list-card-actions">
 
     <!-- Status -->
     <div class="text-xs text-gray-400">
@@ -98,10 +96,7 @@
         <!-- Redigera (placeholder) -->
         <button type="button"
                 onclick="document.getElementById('edit-saving-@saving.Id').classList.remove('hidden')"
-                class="inline-flex items-center justify-center rounded-md
-               border border-white/10 bg-white/5
-               px-3 py-2 text-xs font-medium text-gray-200
-               transition hover:bg-white/10">
+                class="list-card-btn list-card-btn--edit">
             Redigera
         </button>
         
@@ -112,10 +107,7 @@
               onsubmit="return confirm('Är du säker på att du vill radera detta sparmål?');">
             <input type="hidden" name="id" value="@saving.Id" />
             <button type="submit"
-                    class="inline-flex items-center justify-center rounded-md
-                           border border-rose-500/30 bg-rose-500/10
-                           px-3 py-2 text-xs font-medium text-rose-200
-                           transition hover:bg-rose-500/20 hover:border-rose-500/40">
+                    class="list-card-btn list-card-btn--delete">
                 Radera
             </button>
         </form>

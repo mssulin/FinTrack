@@ -1,39 +1,39 @@
 @model WebApp.ViewModels.SignUpViewModel
 
-<div class="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-    <div class="text-center mb-6">
-        <h3 class="text-xl font-semibold text-white">Skapa konto</h3>
+<div class="auth-card">
+    <div class="auth-header">
+        <h3 class="auth-title">Skapa konto</h3>
     </div>
     
-    <form asp-controller="Auth" asp-action="SignUp" method="post" novalidate class="flex flex-col gap-4">
+    <form asp-controller="Auth" asp-action="SignUp" method="post" novalidate class="auth-form">
         @Html.AntiForgeryToken()
         
         <div class="form-field">
-            <label asp-for="FirstName" class="text-sm text-gray-300"></label>
+            <label asp-for="FirstName" class="form-label"></label>
             <input asp-for="FirstName" class="modal-input" />
             <span asp-validation-for="FirstName" class="field-error"></span>
         </div>
         
         <div class="form-field">
-            <label asp-for="LastName" class="text-sm text-gray-300"></label>
+            <label asp-for="LastName" class="form-label"></label>
             <input asp-for="LastName" class="modal-input" />
             <span asp-validation-for="LastName" class="field-error"></span>
         </div>
         
         <div class="form-field">
-            <label asp-for="Email" class="text-sm text-gray-300"></label>
+            <label asp-for="Email" class="form-label"></label>
             <input asp-for="Email" class="modal-input" />
             <span asp-validation-for="Email" class="field-error"></span>
         </div>
 
         <div class="form-field">
-            <label asp-for="Password" class="text-sm text-gray-300"></label>
+            <label asp-for="Password" class="form-label"></label>
             <input asp-for="Password" type="password" class="modal-input" />
             <span asp-validation-for="Password" class="field-error"></span>
         </div>
         
         <div class="form-field">
-            <label asp-for="ConfirmPassword" class="text-sm text-gray-300"></label>
+            <label asp-for="ConfirmPassword" class="form-label"></label>
             <input asp-for="ConfirmPassword" class="modal-input" type="password" />
             <span asp-validation-for="ConfirmPassword" class="field-error"></span>
         </div>
@@ -43,8 +43,8 @@
         <button type="submit" class="modal-submit">Skapa ett konto</button>
     </form>
 
-    <div class="mt-6 text-center text-xs text-gray-400">
+    <div class="auth-footer">
         Redan registrerad?
-        <a asp-controller="Auth" asp-action="SignIn" class="text-emerald-400 hover:underline">Logga in</a>
+        <a asp-controller="Auth" asp-action="SignIn" class="auth-btn">Logga in</a>
     </div>
 </div>
