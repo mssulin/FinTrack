@@ -1,5 +1,6 @@
 using System.Globalization;
 using Business.Dtos;
+using Business.Factories;
 using Business.Helpers;
 using Business.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -36,16 +37,14 @@ public class DashboardService(IConfiguration config, ISavingService savingServic
             endInclusive = endOfPeriod.Date.AddDays(1).AddTicks(-1);
             endOfPeriodForHeader = endOfPeriod;
         }
-
-        // Inkomster
-        var incomes = await _incomeService.GetIncomesAsync(userId);
+        
+        var incomes = (await _incomeService.GetIncomesAsync(userId)).ToList();
 
         var totalIncome = incomes
             .Where(i => i.Date >= start && i.Date <= endInclusive)
             .Sum(i => i.Amount);
-
-        // Utgifter
-        var expenses = await _expenseService.GetExpensesAsync(userId);
+        
+        var expenses = (await _expenseService.GetExpensesAsync(userId)).ToList();
 
         var expenseDtos = expenses
             .Where(e => e.Date >= start && e.Date <= endInclusive)
@@ -61,8 +60,7 @@ public class DashboardService(IConfiguration config, ISavingService savingServic
 
         var today = DateTime.Today;
         var windowEnd = today.AddDays(14);
-
-        // Prenumerationer
+        
         var subs = await _subService.GetSubsAsync();
 
         var subDtos = subs
@@ -87,19 +85,15 @@ public class DashboardService(IConfiguration config, ISavingService savingServic
             })
             .OrderBy(s => s.NextPaymentDate)
             .ToList();
+        
+        var savings = (await _savingService.GetAllSavingsAsync(userId)).ToList();
 
-        // Sparmål
-        var savings = await _savingService.GetAllSavingsAsync(userId);
-
-        // Sparhistorik
-        var savingHistory = await _savingService.GetSavingHistoryAsync(userId);
-
-        // Totalt sparat denna period
+        var savingHistory = (await _savingService.GetSavingHistoryAsync(userId)).ToList();
+        
         var totalSavedThisMonth = savingHistory
             .Where(h => h.Date >= start && h.Date <= endInclusive)
             .Sum(h => h.Amount);
-
-        // Total balans
+        
         var totalIncomeAllTime = incomes.Sum(i => i.Amount);
         var totalExpensesAllTime = expenses.Sum(e => e.Amount);
         var totalSavedAllTime = savingHistory.Sum(h => h.Amount);
@@ -108,49 +102,25 @@ public class DashboardService(IConfiguration config, ISavingService savingServic
             totalIncomeAllTime -
             totalExpensesAllTime -
             totalSavedAllTime;
-
-        // Sparprocent
+        
         var savingPercent = totalIncome > 0
             ? Math.Round((totalSavedThisMonth / totalIncome) * 100, 1)
             : 0;
-
-        // Månad
+        
         var culture = new CultureInfo("sv-SE");
 
         var currentMonth = culture.TextInfo.ToTitleCase(
             endOfPeriodForHeader.ToString("MMMM yyyy", culture));
 
-        return new DashboardDto
-        {
-            TotalIncome = totalIncome,
-            TotalExpenses = totalExpenses,
-
-            AvailableMoney = runningBalance,
-
-            Expenses = expenseDtos,
-            Subscriptions = subDtos,
-            Savings = savings.ToList(),
-
-            CurrentMonth = currentMonth,
-            SavingPercent = savingPercent,
-
-            ExpenseCategories = new List<string>
-            {
-                "Boende",
-                "Mat",
-                "Transport",
-                "Shopping",
-                "Nöje",
-                "Husdjur"
-            },
-
-            IncomeSources = new List<string>
-            {
-                "Lön",
-                "CSN",
-                "Dricks",
-                "Försäljning"
-            }
-        };
+        return DashboardFactory.Create(
+            totalIncome,
+            totalExpenses,
+            runningBalance,
+            expenseDtos,
+            subDtos,
+            savings,
+            currentMonth,
+            savingPercent
+        );
     }
 }
