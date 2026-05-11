@@ -1,3 +1,36 @@
-<div>
-    <p>© 2025 FinTrack </p>
-</div>
+<footer class="mt-2 border-t border-white/10 bg-[#0F111A]">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between">
+        
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="text-lg">🏠</span>
+                <span class="text-sm font-semibold text-white">FinTrack</span>
+            </div>
+
+            <p class="mt-2 text-xs text-gray-400">
+                Få koll på din ekonomi på ett enkelt sätt.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap gap-4 text-xs text-gray-400">
+            <a asp-controller="Dashboard" asp-action="Index"
+               class="transition hover:text-white">
+                Dashboard
+            </a>
+
+            <a asp-controller="Subscription" asp-action="Index"
+               class="transition hover:text-white">
+                Prenumerationer
+            </a>
+
+            <a asp-controller="Saving" asp-action="Index"
+               class="transition hover:text-white">
+                Sparande
+            </a>
+        </div>
+
+        <p class="text-xs text-gray-500">
+            © @DateTime.Now.Year FinTrack
+        </p>
+    </div>
+</footer>

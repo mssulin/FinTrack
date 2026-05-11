@@ -8,35 +8,32 @@
   <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
   
 </head>
-<body class="m-0 text-[16px] text-gray-200 font-[var(--font-sans)] not-italic bg-[#0F111A] font-medium pb-[calc(76px+env(safe-area-inset-bottom))]">
+<body class="m-0 text-[16px] text-gray-200 font-[var(--font-sans)] not-italic bg-[#0F111A] font-medium">
 
-<div id="layout"
-     class="min-h-dvh grid grid-cols-1 grid-rows-[auto_1fr_auto] gap-4
+<div class="grid grid-cols-1 gap-4 pb-[80px]
 
             md:grid-cols-[240px_minmax(0,1fr)]
+
             lg:grid-cols-[280px_minmax(0,1fr)]
+
             xl:grid-cols-[320px_minmax(0,1fr)]
-            md:gap-4 md:p-4">
+
+            md:gap-4 md:p-4 md:pb-4">
     
-    @await Html.PartialAsync("Partials/Components/Navbar/_NavbarPartial")
+  @await Html.PartialAsync("Partials/Components/Navbar/_NavbarPartial")
+    
+  <main class="min-w-0 lg:col-start-2">
+    <div class="w-full max-w-[2000px] px-4 pt-8 flex flex-col gap-6">
+      @RenderBody()
+    </div>
+  </main>
+</div>
 
-    <!-- Main -->
-    <main class="min-w-0 lg:col-start-2">
-      <div class="w-full max-w-[2000px] px-4 pt-8 flex flex-col gap-6">
-        @RenderBody()
-      </div>
-    </main>
+@await Html.PartialAsync("Partials/Components/_FooterPartial")
 
-    <!-- Footer-->
-    <footer class="lg:col-span-2">
-      @await Html.PartialAsync("Partials/Components/_FooterPartial")
-    </footer>
-  </div>
-
-  <!-- Scripts -->
+<!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="~/js/chart.js" asp-append-version="true"></script>
-  <script src="~/js/site.js" asp-append-version="true"></script>
   <script src="~/js/modal.js" asp-append-version="true"></script>
   <script src="~/js/dropdown.js" asp-append-version="true"></script>
 
