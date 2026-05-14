@@ -10,9 +10,9 @@
         <div class="card-accent-line from-purple-400 to-pink-400"></div>
     </div>
     
-    <div class="relative w-full h-[220px] sm:h-[260px] lg:-[320px]">
+    <div class="relative w-full h-[260px] sm:h-[300px] lg:h-[360px]">
         <canvas id="expenseChart"
-                class="absolute inset-0"
+                class="w-full h-full"
                 data-categories='@System.Text.Json.JsonSerializer.Serialize(Model.Select(e => e.Category).Distinct())'
                 data-amounts='@System.Text.Json.JsonSerializer.Serialize(Model.GroupBy(e => e.Category).Select(g => g.Sum(x => x.Amount)))'>
         </canvas>
