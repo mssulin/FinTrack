@@ -10,13 +10,8 @@
 WebApp/wwwroot/uploads/
 **/wwwroot/uploads/
 
-# SQLite
-**/*.db
-**/*.db-shm
-**/*.db-wal
 
 # Local settings / secrets
-appsettings.json
 appsettings.Development.json
 
 # Node
@@ -26,3 +21,5 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+*.DotSettings.user
